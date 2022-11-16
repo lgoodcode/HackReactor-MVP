@@ -2,9 +2,6 @@
 module.exports = {
   content: ['./index.html', './src/**/*.{jsx,tsx,html}'],
   theme: {
-    fontFamily: {
-      mont: ['Montserrat', 'sans-serif'],
-    },
     extend: {
       colors: {
         purple: {

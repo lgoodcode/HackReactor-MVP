@@ -16,7 +16,7 @@ export declare global {
     reviews_text_count: number
     added: number
     added_by_status: AddedByStatus
-    metacritic: null
+    metacritic: number
     playtime: number
     suggestions_count: number
     updated: Date

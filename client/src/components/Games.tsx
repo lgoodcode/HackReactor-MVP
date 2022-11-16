@@ -7,7 +7,7 @@ import SimpleLoader from './Loaders/Simple'
 
 const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY
 const RAWG_API_ENDPOINT = 'https://api.rawg.io/api/games'
-const PAGE_SIZE = 20
+const PAGE_SIZE = 30
 const ordering = [
   { id: 1, name: 'Higher Rating', unavailable: false },
   { id: 2, name: 'Lowest Rating', unavailable: false },
@@ -42,21 +42,26 @@ export default function Games() {
         cols[i % cols.length].push(data[j])
       }
 
-      setLoading(false)
-      setButtonLoading(false)
-      setCols(cols)
+      // Artifical delay to show the loader
+      setTimeout(() => {
+        setLoading(false)
+        setButtonLoading(false)
+        setCols(cols)
+      }, 1000)
     })
   }, [page])
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="w-full h-full centered">
+      // Adjust for the navbar offest
+      <div className="w-full h-full centered relative -top-[84px]">
         <CrossLoader />
       </div>
     )
+  }
 
   return (
-    <div className="games-container w-full pb-16">
+    <section className="games-container w-full py-24">
       <div className="filtering mb-2 w-64">
         <Filter data={ordering} selected={selected} setSelected={setSelected} />
       </div>
@@ -79,6 +84,6 @@ export default function Games() {
           {buttonLoading ? <SimpleLoader /> : 'Load more'}
         </button>
       </div>
-    </div>
+    </section>
   )
 }

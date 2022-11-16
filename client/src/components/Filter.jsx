@@ -9,8 +9,8 @@ export default function Filter({ data, selected, setSelected }) {
       <div className="relative mt-1 text-gray-100">
         <Listbox.Button className="relative w-full cursor-default bg-gray-800 rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
           <span className="mr-1">Order by:</span>
-          <span className="font-semibold mr-2">{selected.name}</span>
-          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+          <span className="font-semibold">{selected.name}</span>
+          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1">
             <ChevronUpDownIcon className="h-6 w-6 fill-gray-100" aria-hidden="true" />
           </span>
         </Listbox.Button>

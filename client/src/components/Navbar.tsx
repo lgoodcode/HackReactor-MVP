@@ -2,7 +2,7 @@ import { ReactComponent as Search } from '../assets/search.svg'
 
 export default function Navbar() {
   return (
-    <div className="navbar h-[68px] px-36 mb-12 w-full bg-transparent flex justify-between">
+    <div className="navbar h-[84px] px-36 py-2 w-full bg-transparent flex justify-between">
       <div className="logo flex items-center select-none">
         <img src="/vite.svg" alt="logo" className="w-[48px] h-[48px]" />
         <h1 className="text-2xl font-bold ml-2 hover:cursor-default">MVP</h1>
@@ -21,7 +21,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className="user flex items-center ml-8">
+        <div className="user flex items-center ml-4">
           <button className="btn rounded-md text-gray-200 hover:text-white bg-lavender-500 hover:bg-lavender-400">
             Sign Up
           </button>
