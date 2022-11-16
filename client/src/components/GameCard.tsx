@@ -15,7 +15,7 @@ export default function GameCard({ game }: { game: Game }) {
           <div className="platforms"></div>
         </div>
         <div className="name">
-          <h3 className="text-lg font-semibold">{game.name}</h3>
+          <h3 className="text-lg font-semibold font-[Montserrat]">{game.name}</h3>
         </div>
       </div>
     </div>

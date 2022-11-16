@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <div className="navbar h-[68px] px-36 mb-12 w-full bg-transparent flex justify-between">
       <div className="logo flex items-center select-none">
-        <img src="/vite.svg" alt="logo" className="w-[50px] h-[50px]" />
+        <img src="/vite.svg" alt="logo" className="w-[48px] h-[48px]" />
         <h1 className="text-2xl font-bold ml-2 hover:cursor-default">MVP</h1>
       </div>
 
@@ -13,11 +13,11 @@ export default function Navbar() {
           <input
             type="text"
             placeholder="Search for games"
-            className="w-[300px] h-[40px] px-4 rounded-l-md"
+            className="w-[300px] h-[40px] px-4 rounded-l-md bg-gray-800 outline-none"
           />
 
           <button className="btn h-[40px] bg-cool-500 hover:bg-cool-400 text-white rounded-r-md">
-            <Search width={24} height={24} fill="white" />
+            <Search width={18} height={18} fill="white" />
           </button>
         </div>
 

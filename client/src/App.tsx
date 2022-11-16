@@ -8,7 +8,7 @@ export default function App() {
       <main className="w-full min-h-screen mx-auto xl:max-w-7xl centered">
         <Games />
       </main>
-      <footer className="h-36 bg-black"></footer>
+      {/* <footer className="h-36 bg-black"></footer> */}
     </>
   )
 }

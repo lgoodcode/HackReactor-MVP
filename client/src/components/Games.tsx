@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'preact/hooks'
 import GameCard from './GameCard'
+// @ts-ignore
+import Filter from './Filter'
 import CrossLoader from './Loaders/Cross'
 import SimpleLoader from './Loaders/Simple'
 
 const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY
 const RAWG_API_ENDPOINT = 'https://api.rawg.io/api/games'
 const PAGE_SIZE = 20
+const ordering = [
+  { id: 1, name: 'Higher Rating', unavailable: false },
+  { id: 2, name: 'Lowest Rating', unavailable: false },
+  { id: 3, name: 'Newest', unavailable: false },
+  { id: 4, name: 'Oldest', unavailable: false },
+]
 
 const fetcher = (url: string, query = '') =>
   fetch(url + `?key=${RAWG_API_KEY}&page_size=${PAGE_SIZE}&${query}`)
@@ -15,6 +23,7 @@ const fetcher = (url: string, query = '') =>
 export default function Games() {
   const [loading, setLoading] = useState(true)
   const [buttonLoading, setButtonLoading] = useState(false)
+  const [selected, setSelected] = useState(ordering[0])
   const [cols, setCols] = useState<Game[][]>(
     Array.from<Game[][]>({ length: 4 }).map<Game[]>(() => [])
   )
@@ -48,6 +57,10 @@ export default function Games() {
 
   return (
     <div className="games-container w-full pb-16">
+      <div className="filtering mb-2 w-64">
+        <Filter data={ordering} selected={selected} setSelected={setSelected} />
+      </div>
+
       <div className="games grid grid-cols-4 gap-6 mb-16">
         {cols.map((games, i) => (
           <div key={i}>
@@ -60,7 +73,7 @@ export default function Games() {
 
       <div className="w-full flex justify-center">
         <button
-          className="btn bg-cool-500 hover:bg-cool-400 px-6 py-3 rounded-md centered w-36"
+          className="btn bg-lavender-500 hover:bg-lavender-400 px-6 py-3 rounded-md centered w-36"
           onClick={handleLoadMore}
         >
           {buttonLoading ? <SimpleLoader /> : 'Load more'}
