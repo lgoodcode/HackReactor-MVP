@@ -23,5 +23,5 @@
     // Ignore prop-types because we are using TypeScript
     "react/prop-types": "off"
   },
-  "ignorePatterns": ["node_modules/", "dist/", "build/"],
+  "ignorePatterns": ["node_modules/", "dist/", "build/"]
 }

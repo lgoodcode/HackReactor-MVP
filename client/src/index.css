@@ -6,6 +6,14 @@
   .centered {
     @apply flex justify-center items-center;
   }
+
+  .game-card {
+    @apply mt-6 transition-all duration-300 hover:scale-[1.03] relative rounded-lg hover:cursor-pointer;
+  }
+
+  .btn {
+    @apply transition-colors duration-300 px-4 py-2;
+  }
 }
 
 :root {

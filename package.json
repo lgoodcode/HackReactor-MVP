@@ -6,7 +6,13 @@
   "license": "MIT",
   "scripts": {
     "client": "npm start --prefix client",
-    "server": "node server/dist/server.js"
+    "server": "node server/dist/server.js",
+    "lint": "eslint --cache --fix **/*.{js,jsx,ts,tsx}",
+    "typecheck": "npx tsc --noEmit -p ./client/tsconfig.json"
+  },
+  "lint-staged": {
+    "client/src/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",
+    "server/src/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.43.0",
@@ -15,6 +21,8 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.10",
+    "husky": "^8.0.2",
+    "lint-staged": "^12.5.0",
     "prettier": "^2.7.1"
   }
 }

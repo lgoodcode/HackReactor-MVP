@@ -9,3 +9,8 @@ of completion (completed, not completed, etc.), and add a personal review of the
 - The user can also select whether they have completed the game or not.
 - The user will be able to rate the game and the rating will be displayed 
 on the game details page.
+
+
+## **Environment Variables**
+
+`VITE_RAWG_API_KEY` - API key for RAWG API, must be public for the client to use
