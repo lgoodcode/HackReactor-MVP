@@ -177,6 +177,12 @@ export default function AuthPage({ api, setSession }: AuthPageProps) {
                     Remember me
                   </label>
                 </div>
+
+                <div>
+                  <a href="/forgot-password" className="link">
+                    Forgot password?
+                  </a>
+                </div>
               </div>
             </div>
 
