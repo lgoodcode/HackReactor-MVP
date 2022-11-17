@@ -2,6 +2,7 @@ import express from 'express'
 import session from 'express-session'
 import { join } from 'path'
 import compression from 'compression'
+import cors from 'cors'
 import router from './routes'
 
 const app = express()
@@ -10,6 +11,7 @@ if (!process.env.SESSION_SECRET) {
   throw new Error('Missing SESSION_SECRET environment variable')
 }
 
+app.use(cors())
 app.use(compression())
 app.use(express.json())
 app.use(

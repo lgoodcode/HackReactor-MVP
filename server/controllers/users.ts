@@ -6,7 +6,7 @@ export const getSession = async (req: Request, res: Response) => {
   const { user } = req.session
 
   if (!user) {
-    return res.status(401).json({ error: 'Not logged in' })
+    return res.status(200).json(null)
   }
 
   return req.session

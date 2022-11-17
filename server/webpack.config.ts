@@ -63,7 +63,7 @@ const config: Configuration = {
       ? undefined
       : new NodemonWebpackPlugin({
           ext: '.ts',
-          watch: ['./server/**/*'],
+          watch: ['./**/*'],
         }),
     // Runs type checking in a separate process to improve performance
     new ForkTsCheckerWebpackPlugin(),
