@@ -7,16 +7,20 @@
     @apply flex justify-center items-center;
   }
 
-  .game-card {
-    @apply mt-6 transition-all duration-300 hover:scale-[1.03] rounded-lg hover:cursor-pointer;
-  }
-
   .btn {
     @apply transition-colors duration-300 px-4 py-2;
   }
 
   .link {
     @apply text-blue-500 hover:underline;
+  }
+
+  .game-card {
+    @apply mt-6 transition-all duration-300 hover:scale-[1.03] rounded-lg hover:cursor-pointer;
+  }
+
+  .game-card-btn {
+    @apply bg-purple-700 hover:bg-purple-400 w-fit p-2 rounded-md inline-flex items-center transition duration-150;
   }
 }
 

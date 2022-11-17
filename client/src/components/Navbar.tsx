@@ -34,7 +34,7 @@ export default function Navbar({ session, logout }: NavbarProps) {
       </div>
 
       <div className="search flex items-center">
-        <div className="ml-6 centered">
+        <div className="ml-4 centered">
           <input
             type="text"
             placeholder="Search for games"
@@ -46,7 +46,7 @@ export default function Navbar({ session, logout }: NavbarProps) {
           </button>
         </div>
 
-        <div className="w-full h-full flex items-center ml-6">
+        <div className="w-full h-full flex items-center ml-4">
           {session ? (
             <Popover className="user relative">
               <Popover.Button className="w-[42px] h-[42px] centered rounded-full cursor-pointer bg-gradient-to-b from-lavender-300 to-cool-500 hover:opacity-80 transition-opacity duration-150">
@@ -103,7 +103,7 @@ export default function Navbar({ session, logout }: NavbarProps) {
               </button>
               <button
                 onClick={() => navigate('/login')}
-                className="btn ml-6 rounded-md border-2 border-transparent hover:bg-lavender-500 hover:bg-opacity-40 text-gray-200 hover:text-white"
+                className="btn ml-4 rounded-md border-2 border-transparent hover:bg-lavender-500 hover:bg-opacity-40 text-gray-200 hover:text-white"
               >
                 Log in
               </button>

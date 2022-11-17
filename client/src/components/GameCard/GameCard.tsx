@@ -1,3 +1,6 @@
+import { useState } from 'preact/hooks'
+import { ReactComponent as PlusIcon } from '@/assets/plus.svg'
+import { ReactComponent as GiftIcon } from '@/assets/gift.svg'
 import './GameCard.css'
 
 export default function GameCard({ game }: { game: Game }) {
@@ -13,9 +16,6 @@ export default function GameCard({ game }: { game: Game }) {
       </div>
 
       <div className="game-card-content p-4 bg-purple-800 rounded-b-lg">
-        {/* <div className="platforms-and-ratings">
-          <div className="platforms"></div>
-        </div> */}
         <div className="name-and-rating">
           <div className="flex flex-row justify-between relative">
             <h3 className="text-lg font-semibold font-mont break-words w-[calc(100%-42px)]">
@@ -46,6 +46,15 @@ export default function GameCard({ game }: { game: Game }) {
                 </span>
               </div>
             )}
+          </div>
+        </div>
+
+        <div className="game-options mt-4">
+          <div className="library game-card-btn">
+            <PlusIcon width={16} height={16} className="fill-white" />
+          </div>
+          <div className="library game-card-btn ml-2">
+            <GiftIcon width={16} height={16} className="fill-white" />
           </div>
         </div>
       </div>
