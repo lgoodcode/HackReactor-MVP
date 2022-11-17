@@ -5,10 +5,12 @@ export type InputProps = {
   placeholder?: boolean
   required?: boolean
   defaultValue?: string
+  size?: 'sm' | 'md' | 'lg'
+  bg?: string // The background color of the input's background
   onChange?: (e?: any) => void
   onBlur?: (e?: any) => void
   error?: string
-  bg?: string
+  color?: 'light' | 'dark'
 }
 
 export default function Input({
@@ -18,9 +20,11 @@ export default function Input({
   placeholder,
   required = false,
   defaultValue = '',
+  size = 'md',
   onChange,
   onBlur,
   error = '',
+  color = 'light',
   bg,
 }: InputProps) {
   return (
@@ -41,14 +45,14 @@ export default function Input({
             'rounded-lg',
             'border',
             'border-1',
-            Boolean(error) ? 'border-red-500' : 'border-gray-300',
+            Boolean(error) ? 'border-red-400' : 'border-gray-300',
             'bg-transparent',
             'px-2.5',
             'pb-2.5',
             'pt-4',
-            'text-sm',
-            'text-gray-900',
-            Boolean(error) ? 'focus:border-red-500' : 'focus:border-green-600',
+            size === 'sm' ? 'text-sm' : size === 'md' ? 'text-md' : 'text-lg',
+            color === 'light' ? 'text-gray-50' : 'text-gray-800',
+            Boolean(error) ? 'focus:border-red-400' : 'focus:border-lavender-300',
             'focus:outline-none',
             'focus:ring-0',
           ].join(' ')}
@@ -61,24 +65,24 @@ export default function Input({
             'left-1',
             'z-10',
             'origin-[0]',
-            '-translate-y-4',
+            '-translate-y-5',
             'scale-75',
             'transform',
             'cursor-text',
             'select-none',
-            bg ? bg : 'bg-white',
+            bg ? bg : 'bg-purple-500', // The bg must be the color of the input's background
             'px-2',
-            'text-sm',
-            Boolean(error) ? 'text-red-500' : 'text-gray-500',
+            size === 'sm' ? 'text-sm' : size === 'md' ? 'text-md' : 'text-lg',
+            Boolean(error) ? 'text-red-400' : 'text-gray-100',
             'duration-300',
             'peer-placeholder-shown:top-1/2',
             'peer-placeholder-shown:-translate-y-1/2',
             'peer-placeholder-shown:scale-100',
             'peer-focus:top-2',
-            'peer-focus:-translate-y-4',
+            'peer-focus:-translate-y-5',
             'peer-focus:scale-75',
             'peer-focus:px-2',
-            Boolean(error) ? 'focus:text-red-500' : 'peer-focus:text-green-600',
+            Boolean(error) ? 'focus:text-red-400' : 'peer-focus:text-lavender-300',
           ].join(' ')}
         >
           {label + (required ? '*' : '')}
@@ -87,7 +91,7 @@ export default function Input({
 
       {error && (
         <div className="ml-2">
-          <span className="text-sm text-red-500">{error}</span>
+          <span className="text-sm text-red-400">{error}</span>
         </div>
       )}
     </div>

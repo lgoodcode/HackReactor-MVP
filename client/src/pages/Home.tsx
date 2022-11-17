@@ -8,7 +8,7 @@ const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY
 const RAWG_API_ENDPOINT = 'https://api.rawg.io/api/games'
 const PAGE_SIZE = 30
 const ordering: Ordering[] = [
-  { id: 1, name: 'Higher Rating', unavailable: false },
+  { id: 1, name: 'Highest Rating', unavailable: false },
   { id: 2, name: 'Lowest Rating', unavailable: false },
   { id: 3, name: 'Newest', unavailable: false },
   { id: 4, name: 'Oldest', unavailable: false },
@@ -19,7 +19,7 @@ const fetcher = (url: string, query = '') =>
     .then((res) => res.json())
     .then((res) => res.results)
 
-export default function Games() {
+export default function Games({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true)
   const [buttonLoading, setButtonLoading] = useState(false)
   const [selected, setSelected] = useState(ordering[0])
@@ -27,6 +27,10 @@ export default function Games() {
   const [cols, setCols] = useState<Game[][]>(
     Array.from<Game[][]>({ length: 4 }).map<Game[]>(() => [])
   )
+
+  // Need to set the title in case redirected from other pages
+  document.title = 'MVP'
+
   const handleLoadMore = () => {
     setButtonLoading(true)
     setPage((prevPage) => prevPage + 1)
@@ -41,12 +45,9 @@ export default function Games() {
         cols[i % cols.length].push(data[j])
       }
 
-      // Artifical delay to show the loader
-      setTimeout(() => {
-        setLoading(false)
-        setButtonLoading(false)
-        setCols(cols)
-      }, 1000)
+      setLoading(false)
+      setButtonLoading(false)
+      setCols(cols)
     })
   }, [page])
 

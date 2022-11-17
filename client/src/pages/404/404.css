@@ -1,0 +1,22 @@
+.error-page .heading {
+  text-align: center;
+  font-size: 9rem;
+  line-height: 1.3em;
+  margin: 2rem 0 0.5rem 0;
+  padding: 0;
+  text-shadow: 0 0 1rem #fefefe;
+}
+
+.error-page .subheading,
+.error-boundary .subheading {
+  text-align: center;
+  max-width: 480px;
+  font-size: 1.5em;
+  line-height: 1.15em;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+.error-boundary .subheading {
+  max-width: 720px;
+}
