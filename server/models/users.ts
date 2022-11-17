@@ -27,5 +27,5 @@ export const authenticate = async (email: string, password: string) => {
     [email, password]
   )
 
-  return rows[0].id
+  return rows.length ? rows[0].id : null
 }

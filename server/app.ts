@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { type NextFunction, type Request, type Response } from 'express'
 import session from 'express-session'
 import { join } from 'path'
 import compression from 'compression'
