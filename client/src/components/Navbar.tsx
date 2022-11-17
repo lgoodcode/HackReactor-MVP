@@ -10,7 +10,7 @@ export default function Navbar() {
     <div className="navbar h-[84px] px-36 py-2 w-full bg-transparent flex justify-between">
       <div onClick={handleLogoClick} className="logo flex items-center select-none cursor-pointer">
         <img src="/vite.svg" alt="logo" className="w-[48px] h-[48px]" />
-        <h1 className="text-2xl font-bold ml-2">MVP</h1>
+        <h1 className="text-4xl font-medium ml-2 font-mont">MVP</h1>
       </div>
 
       <div className="search flex items-center">

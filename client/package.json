@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build && copy server.js dist",
+    "preview": "vite preview",
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.4",
+    "compression": "^1.7.4",
+    "copy": "^0.3.2",
+    "express": "^4.18.2",
     "preact": "^10.11.2",
-    "react-query": "^3.39.2",
     "react-router-dom": "^6.4.3"
   },
   "devDependencies": {

@@ -18,7 +18,7 @@ export default function GameCard({ game }: { game: Game }) {
         </div> */}
         <div className="name-and-rating">
           <div className="flex flex-row justify-between relative">
-            <h3 className="text-lg font-semibold font-[Montserrat] break-words w-[calc(100%-42px)]">
+            <h3 className="text-lg font-semibold font-mont break-words w-[calc(100%-42px)]">
               {game.name}
             </h3>
 

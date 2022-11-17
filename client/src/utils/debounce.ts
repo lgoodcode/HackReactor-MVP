@@ -3,7 +3,7 @@
  * the timer and the function will be called after the timer has elapsed.
  */
 export default function debounce(func: (...args: any) => void, timeout = 10) {
-  let timer: NodeJS.Timeout
+  let timer: number
   let time = Date.now()
 
   return (...args: any) => {
