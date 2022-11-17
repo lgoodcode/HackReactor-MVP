@@ -5,7 +5,7 @@
     "start": "node dist/server.js",
     "dev": "npx webpack",
     "debug": "node --inspect-brk -r ts-node/register ./index.ts",
-    "build": "--NODE-ENV=production npx webpack"
+    "build": "cross-env NODE_ENV=production npx webpack"
   },
   "nodemonConfig": {
     "ts": "ts-node",
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "compression": "^1.7.4",
+    "cross-env": "^7.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "pg": "^8.8.0",

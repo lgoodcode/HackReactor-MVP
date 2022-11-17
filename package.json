@@ -5,8 +5,15 @@
   "author": "Lawrence Good",
   "license": "MIT",
   "scripts": {
-    "client": "npm start --prefix client",
-    "server": "node server/dist/server.js",
+    "client": "npm run preview --prefix client",
+    "server": "npm start --prefix server",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "build:client": "npm run build --prefix client",
+    "build:server": "npm run build --prefix server",
+    "build": "concurrently \"npm run build:server\" \"npm run build:client\"",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "lint": "eslint --cache --fix **/*.{js,jsx,ts,tsx}",
     "typecheck:client": "npx tsc --noEmit -p ./client/tsconfig.json",
     "typecheck:server": "npx tsc --noEmit -p ./server/tsconfig.json",
@@ -15,6 +22,9 @@
   "lint-staged": {
     "client/src/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "server/src/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix"
+  },
+  "dependencies": {
+    "concurrently": "^7.5.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.43.0",
