@@ -22,28 +22,30 @@ export default function GameCard({ game }: { game: Game }) {
               {game.name}
             </h3>
 
-            <div
-              data-tooltip="Metascore"
-              className={`metacritic absolute right-0 p-[1px] px-1 border-[1px] rounded-md ${
-                game.metacritic > 80
-                  ? 'border-green-600'
-                  : game.metacritic > 60
-                  ? 'border-yellow-500'
-                  : 'border-red-600'
-              }`}
-            >
-              <span
-                className={`text-sm ${
+            {game.metacritic && (
+              <div
+                data-tooltip="Metascore"
+                className={`metacritic absolute right-0 p-[1px] px-1 border-[1px] rounded-md ${
                   game.metacritic > 80
-                    ? 'text-green-500'
+                    ? 'border-green-600'
                     : game.metacritic > 60
-                    ? 'text-yellow-600'
-                    : 'text-red-600'
+                    ? 'border-yellow-500'
+                    : 'border-red-600'
                 }`}
               >
-                {game.metacritic}
-              </span>
-            </div>
+                <span
+                  className={`text-sm ${
+                    game.metacritic > 80
+                      ? 'text-green-500'
+                      : game.metacritic > 60
+                      ? 'text-yellow-600'
+                      : 'text-red-600'
+                  }`}
+                >
+                  {game.metacritic}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
