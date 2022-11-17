@@ -1,9 +1,15 @@
-import { Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
+import { Fragment } from 'preact/jsx-runtime'
 import { ReactComponent as CheckIcon } from '../assets/check.svg'
 import { ReactComponent as ChevronUpDownIcon } from '../assets/chevron-up-down.svg'
 
-export default function Filter({ data, selected, setSelected }) {
+export type FilterProps = {
+  data: Ordering[]
+  selected: Ordering
+  setSelected: (order: Ordering) => void
+}
+
+export default function Filter({ data, selected, setSelected }: FilterProps) {
   return (
     <Listbox value={selected} onChange={setSelected}>
       <div className="relative mt-1 text-gray-100">
@@ -16,7 +22,7 @@ export default function Filter({ data, selected, setSelected }) {
         </Listbox.Button>
         <Transition
           as={Fragment}
-          leave="transition ease-in duration-150"
+          leave="transition ease-in duration-100"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
@@ -24,14 +30,14 @@ export default function Filter({ data, selected, setSelected }) {
             {data.map((item, i) => (
               <Listbox.Option
                 key={i}
-                className={({ active }) =>
+                className={({ active }: { active: boolean }): string =>
                   `relative cursor-default select-none py-2 pl-10 pr-4 ${
                     active ? 'bg-gray-700 text-gray-100' : 'text-gray-300'
                   }`
                 }
                 value={item}
               >
-                {({ selected }) => (
+                {({ selected }: { selected: Ordering }) => (
                   <>
                     <span className={`block truncate ${selected ? 'font-normal' : 'font-medium'}`}>
                       {item.name}

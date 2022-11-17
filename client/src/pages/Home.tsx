@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'preact/hooks'
-import GameCard from './GameCard'
-// @ts-ignore
-import Filter from './Filter'
-import CrossLoader from './Loaders/Cross'
-import SimpleLoader from './Loaders/Simple'
+import GameCard from '../components/GameCard'
+import Filter from '../components/Filter'
+import CrossLoader from '../components/Loaders/Cross'
+import SimpleLoader from '../components/Loaders/Simple'
 
 const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY
 const RAWG_API_ENDPOINT = 'https://api.rawg.io/api/games'
 const PAGE_SIZE = 30
-const ordering = [
+const ordering: Ordering[] = [
   { id: 1, name: 'Higher Rating', unavailable: false },
   { id: 2, name: 'Lowest Rating', unavailable: false },
   { id: 3, name: 'Newest', unavailable: false },
@@ -24,10 +23,10 @@ export default function Games() {
   const [loading, setLoading] = useState(true)
   const [buttonLoading, setButtonLoading] = useState(false)
   const [selected, setSelected] = useState(ordering[0])
+  const [page, setPage] = useState(1)
   const [cols, setCols] = useState<Game[][]>(
     Array.from<Game[][]>({ length: 4 }).map<Game[]>(() => [])
   )
-  const [page, setPage] = useState(1)
   const handleLoadMore = () => {
     setButtonLoading(true)
     setPage((prevPage) => prevPage + 1)

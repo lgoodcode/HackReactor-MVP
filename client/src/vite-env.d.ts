@@ -2,6 +2,11 @@
 /// <reference types="vite-plugin-svgr/client" />
 
 export declare global {
+  export interface Ordering {
+    id: number
+    name: string
+    unavailable: boolean
+  }
   export interface Game {
     id: number
     slug: string
