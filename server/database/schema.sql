@@ -17,6 +17,8 @@ CREATE TABLE users (
   -- Will need to use crypt("PASSWORD", gen_salt("bf")) to encrypt password when inserting
   -- and use crypt("SUBMITTED_PASSWORD", password) to compare.
   "password" TEXT NOT NULL,
+  "library" INTEGER[] NOT NULL DEFAULT '{}',
+  "wishlist" INTEGER[] NOT NULL DEFAULT '{}',
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -40,10 +42,6 @@ CREATE TABLE library (
 -- Indexes used for faster queries
 CREATE INDEX idx_library_id ON library("id");
 
--- Re-create triggers to update timestamps on users and library tables
-DROP TRIGGER IF EXISTS update_users_updated_at ON users;
-DROP TRIGGER IF EXISTS update_library_updated_at ON library;
-
 -- Re-create the function to update timestamps
 CREATE OR REPLACE FUNCTION update_timestamp()
 RETURNS TRIGGER AS $$
@@ -52,6 +50,10 @@ BEGIN
   RETURN NEW;
 END;
 $$ language 'plpgsql';
+
+-- Re-create triggers to update timestamps on users and library tables
+DROP TRIGGER IF EXISTS update_users_updated_at ON users;
+DROP TRIGGER IF EXISTS update_library_updated_at ON library;
 
 CREATE TRIGGER update_users_timestamp
 BEFORE UPDATE ON users

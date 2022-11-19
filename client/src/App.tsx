@@ -1,52 +1,28 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect } from 'preact/hooks'
+import Cookies from 'js-cookie'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Auth from './pages/Auth'
 import PageNotFound from './pages/404'
-
-const API_URL = import.meta.env.VITE_API_URL
-
-if (!API_URL) {
-  throw new Error('API_URL is not defined')
-}
-
-const getSession = async () => {
-  try {
-    return await fetch(`${API_URL}/session`).then((res) => res.json())
-  } catch (err) {
-    console.error(err)
-    return null
-  }
-}
+import { useStore } from './utils/fastContext'
 
 export default function App() {
-  const [session, setSession] = useState<Session>(null)
+  const [session, setSession] = useStore<Session>('session')
   const logout = async () => {
-    await fetch(`${API_URL}/logout`)
-    setSession(null)
+    await fetch('/api/logout')
+    // Redirect to the login page after logging out to force a refresh
+    window.location.assign('/')
   }
 
-  // Get the session on initial render
+  // Check if the user is logged in on page load via the cookies
   useEffect(() => {
-    // Check if the session is stored in localStorage
-    const session = localStorage.getItem('session')
+    const session = Cookies.get('session')
 
     if (session) {
       setSession(JSON.parse(session))
-    } else {
-      getSession().then(setSession)
     }
   }, [])
-
-  // Store the session in localStorage
-  useEffect(() => {
-    if (session) {
-      localStorage.setItem('session', JSON.stringify(session))
-    } else {
-      localStorage.removeItem('session')
-    }
-  }, [session])
 
   return (
     <BrowserRouter>
@@ -62,8 +38,8 @@ export default function App() {
             </>
           }
         />
-        <Route path="/login" element={<Auth api={API_URL} setSession={setSession} />} />
-        <Route path="/signup" element={<Auth api={API_URL} setSession={setSession} />} />
+        <Route path="/login" element={<Auth setSession={setSession} />} />
+        <Route path="/signup" element={<Auth setSession={setSession} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       {/* <footer className="h-36 bg-black"></footer> */}

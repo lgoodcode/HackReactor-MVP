@@ -12,7 +12,7 @@ export type FilterProps = {
 export default function Filter({ data, selected, setSelected }: FilterProps) {
   return (
     <Listbox value={selected} onChange={setSelected}>
-      <div className="relative mt-1 text-gray-100">
+      <div className="relative mt-1 text-gray-100 shadow-md">
         <Listbox.Button className="relative w-full text-sm cursor-default bg-gray-800 rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-300">
           <span className="mr-1">Order by:</span>
           <span className="font-semibold">{selected.name}</span>

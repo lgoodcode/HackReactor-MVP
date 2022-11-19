@@ -1,9 +1,13 @@
 import { useState } from 'preact/hooks'
+import SimpleLoader from '../Loaders/Simple'
 import { ReactComponent as PlusIcon } from '@/assets/plus.svg'
 import { ReactComponent as GiftIcon } from '@/assets/gift.svg'
 import './GameCard.css'
 
 export default function GameCard({ game }: { game: Game }) {
+  const [loading, setLoading] = useState(true)
+  const handleUpdateLibrary = () => null
+
   return (
     <div key={game.id} className="game-card">
       <div className="card-img overflow-hidden relative w-full h-[180px]">

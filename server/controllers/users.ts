@@ -1,13 +1,10 @@
 import sanitizeHtml from 'sanitize-html'
 import { createUser, authenticate } from '@/models/users'
-import { Request, Response } from 'express'
-
-export const getSession = async (req: Request, res: Response) => {
-  res.status(200).json(req.session.user_id || null)
-}
+import type { Request, Response } from 'express'
 
 export const logout = async (req: Request, res: Response) => {
-  req.session.user_id = null
+  req.session.user = null
+  res.cookie('session', null, { maxAge: 0 })
   res.sendStatus(200)
 }
 
@@ -21,15 +18,15 @@ export const register = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Missing email or password' })
   }
 
-  const id = await createUser(sanitizeHtml(email), sanitizeHtml(password))
+  const user = await createUser(sanitizeHtml(email), sanitizeHtml(password))
 
-  if (!id) {
+  if (!user) {
     return res.status(400).json({ error: 'Email already in use' })
   }
 
-  req.session.user_id = id
-
-  res.status(201).json({ session: req.session.user_id || null })
+  req.session.user = user
+  res.cookie('session', JSON.stringify(user), { maxAge: 1000 * 60 * 60 * 24 * 7 })
+  res.status(201).json({ session: user || null })
 }
 
 export const login = async (req: Request, res: Response) => {
@@ -40,13 +37,13 @@ export const login = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Missing email or password' })
   }
 
-  const id = await authenticate(sanitizeHtml(email), sanitizeHtml(password))
+  const user = await authenticate(sanitizeHtml(email), sanitizeHtml(password))
 
-  if (!id) {
+  if (!user) {
     return res.status(400).json({ error: 'Invalid email or password' })
   }
 
-  req.session.user_id = id
-
-  res.status(200).json({ session: req.session.user_id || null })
+  req.session.user = user
+  res.cookie('session', JSON.stringify(user), { maxAge: 1000 * 60 * 60 * 24 * 7 })
+  res.status(200).json({ session: user || null })
 }

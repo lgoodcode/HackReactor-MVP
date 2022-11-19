@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Popover, Transition } from '@headlessui/react'
 import { Fragment } from 'preact/jsx-runtime'
+import { useStore } from '@/utils/fastContext'
 import { ReactComponent as Search } from '../assets/search.svg'
 import { ReactComponent as User } from '../assets/user.svg'
 
@@ -77,7 +78,7 @@ export default function Navbar({ session, logout }: NavbarProps) {
                           <div className="flex h-10 w-4 shrink-0 items-center justify-center"></div>
                           <div className="ml-4">
                             <p
-                              className={`text-sm font-medium ${
+                              className={`font-medium ${
                                 i === dropdownItems.length - 1
                                   ? 'text-white'
                                   : 'text-gray-700 hover:text-gray-900'

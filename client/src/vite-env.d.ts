@@ -2,7 +2,11 @@
 /// <reference types="vite-plugin-svgr/client" />
 
 export declare global {
-  export type Session = string | null
+  export type Session = {
+    id: string
+    library: string[]
+    wishlist: string[]
+  } | null
 
   export interface Ordering {
     id: number

@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'preact/hooks'
-import GameCard from '../components/GameCard'
-import Filter from '../components/Filter'
-import CrossLoader from '../components/Loaders/Cross'
-import SimpleLoader from '../components/Loaders/Simple'
+import { useStore } from '@/utils/fastContext'
+import GameCard from '@/components/GameCard'
+import Filter from '@/components/Filter'
+import CrossLoader from '@/components/Loaders/Cross'
+import SimpleLoader from '@/components/Loaders/Simple'
 
 const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY
 const RAWG_API_ENDPOINT = 'https://api.rawg.io/api/games'
-const PAGE_SIZE = 30
+const PAGE_SIZE = 32
+// TODO: set the number of columns based on the screen size
+const NUM_COLS = 4
 const ordering: Ordering[] = [
   { id: 1, name: 'Highest Rating', unavailable: false },
   { id: 2, name: 'Lowest Rating', unavailable: false },
@@ -25,7 +28,7 @@ export default function Games({ session }: { session: Session }) {
   const [selected, setSelected] = useState(ordering[0])
   const [page, setPage] = useState(1)
   const [cols, setCols] = useState<Game[][]>(
-    Array.from<Game[][]>({ length: 4 }).map<Game[]>(() => [])
+    Array.from<Game[][]>({ length: NUM_COLS }).map<Game[]>(() => [])
   )
 
   // Need to set the title in case redirected from other pages

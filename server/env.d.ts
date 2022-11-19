@@ -3,11 +3,17 @@ export declare global {
     id: string
     email: string
     password: string
+    library: string[]
+    wishlist: string[]
   }
 }
 
 declare module 'express-session' {
   interface SessionData {
-    user_id: string | null
+    user: {
+      id: string
+      library: string[]
+      wishlist: string[]
+    } | null
   }
 }

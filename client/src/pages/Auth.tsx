@@ -1,4 +1,4 @@
-import { useState, type StateUpdater } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useForm, type Validations } from '@/utils/useForm'
 import { emailRegex, passwordRegex } from '@/utils/regex'
@@ -24,12 +24,11 @@ const validations: Validations<Data> = {
   },
 }
 
-export type AuthPageProps = {
-  api: string
-  setSession: StateUpdater<Session>
+export type AuthProps = {
+  setSession: (session: Session) => void
 }
 
-export default function AuthPage({ api, setSession }: AuthPageProps) {
+export default function AuthPage({ setSession }: AuthProps) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [signup, setSignup] = useState(pathname.includes('signup') ?? false)
@@ -54,8 +53,8 @@ export default function AuthPage({ api, setSession }: AuthPageProps) {
   const onSubmit = async (data: Data) => {
     setAuthenticating(true)
 
-    const endpoint = signup ? 'register' : 'login'
-    const res = await fetch(`${api}/${endpoint}`, {
+    const endpoint = signup ? '/register' : '/login'
+    const user = await fetch('/api' + endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,8 +67,8 @@ export default function AuthPage({ api, setSession }: AuthPageProps) {
         return err.message
       })
 
-    if ('error' in res) {
-      setServerError(res.error)
+    if ('error' in user) {
+      setServerError(user.error)
       setAuthenticating(false)
       return false
     }
@@ -80,9 +79,8 @@ export default function AuthPage({ api, setSession }: AuthPageProps) {
       localStorage.removeItem('email')
     }
 
-    // Set the session id and redirect to the home page
-    setSession(res.session)
     navigate('/')
+    setSession(user)
     return true
   }
 
@@ -189,7 +187,7 @@ export default function AuthPage({ api, setSession }: AuthPageProps) {
             <div className="form-bottom mt-4 flex flex-col">
               <button
                 type="submit"
-                className="btn rounded-md bg-lavender-500 hover:bg-lavender-400"
+                className="btn rounded-md bg-lavender-400 hover:bg-lavender-500"
               >
                 {signup ? 'Sign up' : 'Log in'}
               </button>
