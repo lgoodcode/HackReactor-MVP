@@ -1,10 +1,8 @@
 import { useState } from 'preact/hooks'
 import { useNavigate } from 'react-router-dom'
 import SimpleLoader from '../Loaders/Simple'
-import { useStore } from '@/utils/fastContext'
 import { ReactComponent as PlusIcon } from '@/assets/plus.svg'
 import { ReactComponent as GiftIcon } from '@/assets/gift.svg'
-import { ReactComponent as CheckIcon } from '@/assets/check.svg'
 import { ReactComponent as GamepadIcon } from '@/assets/gamepad.svg'
 import './GameCard.css'
 
@@ -37,15 +35,15 @@ export default function GameCard({
   handleUpdateWishlist,
 }: GameCardProps) {
   const navigate = useNavigate()
-  const [loadingAddToLibrary, setLoadingAddToLibrary] = useState(false)
-  const [loadingAddToWishlist, setLoadingAddToWishlist] = useState(false)
+  const [loadingLibrary, setLoadingLibrary] = useState(false)
+  const [loadingWishlist, setLoadingWishlist] = useState(false)
   // Handlers to add the game to the library or wishlist and redirects to the login page if not logged in
   const handleAddToLibrary = !session
     ? () => navigate('/login')
     : () => {
-        setLoadingAddToLibrary(true)
+        setLoadingLibrary(true)
         handleAdd(game.id, 'library').then((game) => {
-          setLoadingAddToLibrary(false)
+          setLoadingLibrary(false)
 
           if (game) {
             handleUpdateLibrary!(game)
@@ -55,9 +53,9 @@ export default function GameCard({
   const handleAddToWishlist = !session
     ? () => navigate('/login')
     : () => {
-        setLoadingAddToWishlist(true)
+        setLoadingWishlist(true)
         handleAdd(game.id, 'wishlist').then((game) => {
-          setLoadingAddToWishlist(false)
+          setLoadingWishlist(false)
 
           if (game) {
             handleUpdateWishlist!(game)
@@ -113,7 +111,7 @@ export default function GameCard({
         <div className="game-options mt-4">
           {!library ? (
             <div className="add-to-library game-card-btn" onClick={handleAddToLibrary}>
-              {loadingAddToLibrary ? (
+              {loadingLibrary ? (
                 <SimpleLoader w={16} h={16} />
               ) : (
                 <PlusIcon width={16} height={16} className="fill-white" />
@@ -121,15 +119,12 @@ export default function GameCard({
             </div>
           ) : (
             <div className="game-status game-card-btn centered gap-2 !bg-green-600 hover:!bg-green-500">
-              <CheckIcon width={16} height={16} className="fill-white" />
-              <div className="border-l">
-                <GamepadIcon width={16} height={16} className="fill-white ml-2" />
-              </div>
+              <GamepadIcon width={16} height={16} className="fill-white" />
             </div>
           )}
 
           <div className="add-to-wishlist game-card-btn ml-2" onClick={handleAddToWishlist}>
-            {loadingAddToWishlist ? (
+            {loadingWishlist ? (
               <SimpleLoader w={16} h={16} />
             ) : (
               <GiftIcon width={16} height={16} className="fill-white" />
