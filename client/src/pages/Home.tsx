@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'preact/hooks'
-import { useStore } from '@/utils/fastContext'
 import GameCard from '@/components/GameCard'
 import Filter from '@/components/Filter'
 import CrossLoader from '@/components/Loaders/Cross'
 import SimpleLoader from '@/components/Loaders/Simple'
+import { useStore } from '@/utils/fastContext'
 
 const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY
 const RAWG_API_ENDPOINT = 'https://api.rawg.io/api/games'
@@ -22,7 +22,8 @@ const fetcher = (url: string, query = '') =>
     .then((res) => res.json())
     .then((res) => res.results)
 
-export default function Games({ session }: { session: Session }) {
+export default function Games() {
+  const [session, setSession] = useStore<Session>('session')
   const [loading, setLoading] = useState(true)
   const [buttonLoading, setButtonLoading] = useState(false)
   const [selected, setSelected] = useState(ordering[0])
@@ -38,6 +39,12 @@ export default function Games({ session }: { session: Session }) {
     setButtonLoading(true)
     setPage((prevPage) => prevPage + 1)
   }
+
+  // Handles update the local session state when the user adds a game to the library or wishlist
+  const handleUpdateLibrary = (game: LibraryGame) =>
+    setSession({ ...session!, library: session!.library.concat(game) })
+  const handleUpdateWishlist = (game: WishlistGame) =>
+    setSession({ ...session!, wishlist: session!.wishlist.concat(game) })
 
   // Fetch games whenever the page changes (load more)
   useEffect(() => {
@@ -63,6 +70,8 @@ export default function Games({ session }: { session: Session }) {
     )
   }
 
+  console.log('sessoion', session)
+
   return (
     <section className="games-container w-full py-24">
       <div className="filtering mb-2 w-64">
@@ -72,9 +81,26 @@ export default function Games({ session }: { session: Session }) {
       <div className="games grid grid-cols-4 gap-6 mb-16">
         {cols.map((games, i) => (
           <div key={i}>
-            {games.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
+            {games.map((game) => {
+              // TODO: add state to manage which games were already checked
+              if (!session) return <GameCard key={game.id} game={game} />
+
+              // Check if the game is in the library and the wishlist
+              const library = session.library.find((g) => g.game_id === game.id)
+              const wishlist = session.wishlist.find((g) => g.game_id === game.id)
+
+              return (
+                <GameCard
+                  key={game.id}
+                  game={game}
+                  session={true}
+                  library={library?.progress}
+                  wishlist={Boolean(wishlist)}
+                  handleUpdateLibrary={handleUpdateLibrary}
+                  handleUpdateWishlist={handleUpdateWishlist}
+                />
+              )
+            })}
           </div>
         ))}
       </div>

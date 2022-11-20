@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useEffect } from 'preact/hooks'
-import Cookies from 'js-cookie'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Auth from './pages/Auth'
@@ -15,13 +14,16 @@ export default function App() {
     window.location.assign('/')
   }
 
-  // Check if the user is logged in on page load via the cookies
+  // Check if the user is logged in on page load via the cookies, if so, get the session
+  // and set it in the store
   useEffect(() => {
-    const session = Cookies.get('session')
-
-    if (session) {
-      setSession(JSON.parse(session))
-    }
+    fetch('/api/session')
+      .then((res) => res.json())
+      .then(setSession)
+      .catch((err) => {
+        console.error(err)
+        setSession(null)
+      })
   }, [])
 
   return (
@@ -33,7 +35,7 @@ export default function App() {
             <>
               <Navbar session={session} logout={logout} />
               <main className="w-full min-h-[calc(100vh-84px)] mx-auto xl:max-w-7xl centered flex-col">
-                <Home session={session} />
+                <Home />
               </main>
             </>
           }
@@ -42,7 +44,6 @@ export default function App() {
         <Route path="/signup" element={<Auth setSession={setSession} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-      {/* <footer className="h-36 bg-black"></footer> */}
     </BrowserRouter>
   )
 }

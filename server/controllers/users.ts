@@ -4,9 +4,12 @@ import { getLibrary } from '@/models/library'
 import { getWishlist } from '@/models/wishlist'
 import type { Request, Response } from 'express'
 
+export const getSession = (req: Request, res: Response) => {
+  res.status(200).json(req.session.user ?? null)
+}
+
 export const logout = async (req: Request, res: Response) => {
   req.session.user = null
-  res.cookie('session', null, { maxAge: 0 })
   res.sendStatus(200)
 }
 
@@ -34,7 +37,6 @@ export const register = async (req: Request, res: Response) => {
     library,
     wishlist,
   }
-  res.cookie('session', JSON.stringify(req.session.user), { maxAge: 1000 * 60 * 60 * 24 * 7 })
   res.status(201).json(req.session.user)
 }
 
@@ -60,6 +62,5 @@ export const login = async (req: Request, res: Response) => {
     library,
     wishlist,
   }
-  res.cookie('session', JSON.stringify(req.session.user), { maxAge: 1000 * 60 * 60 * 24 * 7 })
   res.status(200).json(req.session.user)
 }
