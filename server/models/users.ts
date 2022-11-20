@@ -14,20 +14,20 @@ export const createUser = async (email: string, password: string) => {
   const { rows } = await db.query<User>(
     `INSERT INTO users (email, password)
     VALUES ($1, crypt($2, gen_salt('bf')))
-    RETURNING id, library, wishlist`,
+    RETURNING id`,
     [email, password]
   )
 
-  return rows[0]
+  return rows[0].id
 }
 
 export const authenticate = async (email: string, password: string) => {
   const { rows } = await db.query<User>(
-    `SELECT id, library, wishlist
+    `SELECT id
     FROM users
     WHERE email = $1 AND password = crypt($2, password)`,
     [email, password]
   )
 
-  return rows.length ? rows[0] : null
+  return rows.length ? rows[0].id : null
 }

@@ -1,5 +1,7 @@
 import sanitizeHtml from 'sanitize-html'
 import { createUser, authenticate } from '@/models/users'
+import { getLibrary } from '@/models/library'
+import { getWishlist } from '@/models/wishlist'
 import type { Request, Response } from 'express'
 
 export const logout = async (req: Request, res: Response) => {
@@ -18,15 +20,22 @@ export const register = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Missing email or password' })
   }
 
-  const user = await createUser(sanitizeHtml(email), sanitizeHtml(password))
+  const id = await createUser(sanitizeHtml(email), sanitizeHtml(password))
 
-  if (!user) {
+  if (!id) {
     return res.status(400).json({ error: 'Email already in use' })
   }
 
-  req.session.user = user
-  res.cookie('session', JSON.stringify(user), { maxAge: 1000 * 60 * 60 * 24 * 7 })
-  res.status(201).json({ session: user || null })
+  const library = await getLibrary(id)
+  const wishlist = await getWishlist(id)
+
+  req.session.user = {
+    id,
+    library,
+    wishlist,
+  }
+  res.cookie('session', JSON.stringify(req.session.user), { maxAge: 1000 * 60 * 60 * 24 * 7 })
+  res.status(201).json(req.session.user)
 }
 
 export const login = async (req: Request, res: Response) => {
@@ -37,13 +46,20 @@ export const login = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Missing email or password' })
   }
 
-  const user = await authenticate(sanitizeHtml(email), sanitizeHtml(password))
+  const id = await authenticate(sanitizeHtml(email), sanitizeHtml(password))
 
-  if (!user) {
+  if (!id) {
     return res.status(400).json({ error: 'Invalid email or password' })
   }
 
-  req.session.user = user
-  res.cookie('session', JSON.stringify(user), { maxAge: 1000 * 60 * 60 * 24 * 7 })
-  res.status(200).json({ session: user || null })
+  const library = (await getLibrary(id)) || []
+  const wishlist = (await getWishlist(id)) || []
+
+  req.session.user = {
+    id,
+    library,
+    wishlist,
+  }
+  res.cookie('session', JSON.stringify(req.session.user), { maxAge: 1000 * 60 * 60 * 24 * 7 })
+  res.status(200).json(req.session.user)
 }
