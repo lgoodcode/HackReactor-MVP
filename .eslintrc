@@ -13,6 +13,8 @@
       "named": "never",
       "asyncArrow": "always"
     }],
+    // Allow non-null assertions when we know the value is not null
+    "@typescript-eslint/no-non-null-assertion": "off",
     // Allow explicity `any` types when needed
     "@typescript-eslint/no-explicit-any": "off",
     // Allow to ignore ts errors when explicity needed
