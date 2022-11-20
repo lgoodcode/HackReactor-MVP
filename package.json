@@ -21,7 +21,7 @@
   },
   "lint-staged": {
     "client/src/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",
-    "server/src/**/*.ts": "eslint --cache --fix"
+    "server/**/*.ts": "eslint --cache --fix"
   },
   "dependencies": {
     "concurrently": "^7.5.0"

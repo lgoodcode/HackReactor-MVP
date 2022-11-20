@@ -2,10 +2,29 @@
 /// <reference types="vite-plugin-svgr/client" />
 
 export declare global {
+  export type GameProgress = 'pending' | 'in progress' | 'completed'
+
+  export type LibraryGame = {
+    id: number
+    user_id: number
+    game_id: number
+    progress: GameProgress
+    created_at: string
+    updated_at: string
+  }
+
+  export type WishlistGame = {
+    id: number
+    user_id: number
+    game_id: number
+    created_at: string
+    updated_at: string
+  }
+
   export type Session = {
     id: string
-    library: string[]
-    wishlist: string[]
+    library: LibraryGame[]
+    wishlist: WishlistGame[]
   } | null
 
   export interface Ordering {
@@ -13,7 +32,10 @@ export declare global {
     name: string
     unavailable: boolean
   }
+}
 
+// The following types are from the API
+export declare global {
   export interface Game {
     id: number
     slug: string
