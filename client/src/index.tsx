@@ -1,6 +1,6 @@
 import { render } from 'preact'
 import App from './App'
-import { createFastContext } from './utils/fastContext'
+import { createFastContext } from './lib/fastContext'
 import './index.css'
 
 type Store = {

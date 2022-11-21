@@ -4,12 +4,12 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Auth from './pages/Auth'
 import PageNotFound from './pages/404'
-import { useStore } from './utils/fastContext'
+import { useStore } from './lib/fastContext'
 
 export default function App() {
   const [session, setSession] = useStore<Session>('session')
   const logout = async () => {
-    await fetch('/api/logout')
+    await fetch('/api/session', { method: 'DELETE' }).catch(console.error)
     // Redirect to the login page after logging out to force a refresh
     window.location.assign('/')
   }

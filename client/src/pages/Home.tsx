@@ -3,7 +3,7 @@ import GameCard from '@/components/GameCard'
 import Filter from '@/components/Filter'
 import CrossLoader from '@/components/Loaders/Cross'
 import SimpleLoader from '@/components/Loaders/Simple'
-import { useStore } from '@/utils/fastContext'
+import { useStore } from '@/lib/fastContext'
 
 const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY
 const RAWG_API_ENDPOINT = 'https://api.rawg.io/api/games'
@@ -83,7 +83,15 @@ export default function Games() {
           <div key={i}>
             {games.map((game) => {
               // TODO: add state to manage which games were already checked
-              if (!session) return <GameCard key={game.id} game={game} />
+              if (!session)
+                return (
+                  <GameCard
+                    key={game.id}
+                    game={game}
+                    handleUpdateLibrary={handleUpdateLibrary}
+                    handleUpdateWishlist={handleUpdateWishlist}
+                  />
+                )
 
               // Check if the game is in the library and the wishlist
               const library = session.library.find((g) => g.game_id === game.id)

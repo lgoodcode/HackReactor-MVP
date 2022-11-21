@@ -5,9 +5,9 @@ import { addToLibrary } from '@/controllers/library'
 const router = Router()
 
 router.get('/session', getSession)
+router.delete('/session', logout)
 router.post('/register', register)
 router.post('/login', login)
-router.get('/logout', logout)
 
 router.post('/library/:id', addToLibrary)
 

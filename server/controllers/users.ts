@@ -9,7 +9,9 @@ export const getSession = (req: Request, res: Response) => {
 }
 
 export const logout = async (req: Request, res: Response) => {
-  req.session.user = null
+  req.session.destroy((err) => {
+    if (err) console.error(err)
+  })
   res.sendStatus(200)
 }
 

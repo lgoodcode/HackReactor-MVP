@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useForm, type Validations } from '@/utils/useForm'
+import { useForm, type Validations } from '@/hooks/useForm'
 import { emailRegex, passwordRegex } from '@/utils/regex'
 import SimpleLoader from '@/components/Loaders/Simple'
 import Input from '@/components/Input'

@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import debounce from './debounce'
+import debounce from '@/utils/debounce'
 
 // Exclusive OR (XOR) for types so that only regexp or a custom validator
 // is used https://stackoverflow.com/a/60617060/17703865
