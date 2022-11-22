@@ -5,6 +5,7 @@ import LibraryButton from '@/components/Game/LibraryButton'
 import { ReactComponent as PlusIcon } from '@/assets/plus.svg'
 import { ReactComponent as GiftIcon } from '@/assets/gift.svg'
 import './GameCard.css'
+import WishlistButton from '../WishlistButton'
 
 export type GameCardProps = {
   game: Game
@@ -13,23 +14,28 @@ export type GameCardProps = {
   wishlist?: boolean
   menuOpen?: boolean
   setMenuOpen?: (open: boolean) => void
-  handleUpdateLibrary: (game: LibraryGame) => void
-  handleUpdateWishlist: (game: WishlistGame) => void
+  handleUpdateLibrary: (game: LibraryGame, action: GameAction, progress?: GameProgress) => void
+  handleUpdateWishlist: (game: WishlistGame, action: GameAction) => void
 }
 
 const ICON_SIZE = 16
 
 /**
- * Handles adding the game to the user's library or wishlist. Takes the game id and
- * the type of list to add the game to. If the game was added it will return the game
- * object with the progress set to pending.
+ * Handles adding, updating, and removing a game to/from the user's library or wishlist.
+ * Takes the game id and the type of list to add the game to. If the game was added it
+ * will return the game object with the progress set to pending.
  */
-const handleAdd = async (id: number, type: 'library' | 'wishlist') => {
-  try {
-    const res = await fetch(`/api/${type}/${id}`, { method: 'POST' })
-    return res.ok ? await res.json() : null
-  } catch (err) {
-    console.error(err)
+function handleGame<T = any>(action: GameAction) {
+  return async function (id: number, type: 'library' | 'wishlist') {
+    try {
+      const res = await fetch(`/api/${type}/${id}`, {
+        method: action === 'add' ? 'POST' : action === 'update' ? 'PUT' : 'DELETE',
+      })
+      return res.ok ? ((await res.json()) as T) : null
+    } catch (err) {
+      console.error(err)
+      return null
+    }
   }
 }
 
@@ -49,11 +55,11 @@ export default function GameCard({
     ? () => navigate('/login')
     : () => {
         setLoadingLibrary(true)
-        handleAdd(game.id, 'library').then((game) => {
+        handleGame<LibraryGame>('add')(game.id, 'library').then((game) => {
           setLoadingLibrary(false)
           // If the game was returned, it was successful, so update the local session state
           if (game) {
-            handleUpdateLibrary(game)
+            handleUpdateLibrary(game, 'add')
           }
         })
       }
@@ -61,14 +67,34 @@ export default function GameCard({
     ? () => navigate('/login')
     : () => {
         setLoadingWishlist(true)
-        handleAdd(game.id, 'wishlist').then((game) => {
+        handleGame<WishlistGame>('add')(game.id, 'wishlist').then((game) => {
           setLoadingWishlist(false)
           // If the game was returned, it was successful, so update the local session state
           if (game) {
-            handleUpdateWishlist(game)
+            handleUpdateWishlist(game, 'add')
           }
         })
       }
+  const handleRemoveFromLibrary = () => {
+    setLoadingLibrary(true)
+    handleGame<LibraryGame>('remove')(game.id, 'library').then((game) => {
+      setLoadingLibrary(false)
+      // If the game was returned, it was successfully removed, so update the local session state
+      if (game) {
+        handleUpdateLibrary(game, 'remove')
+      }
+    })
+  }
+  const handleRemoveFromWishlist = () => {
+    setLoadingWishlist(true)
+    handleGame<WishlistGame>('remove')(game.id, 'wishlist').then((game) => {
+      setLoadingWishlist(false)
+      // If the game was returned, it was successfully removed, so update the local session state
+      if (game) {
+        handleUpdateWishlist(game, 'remove')
+      }
+    })
+  }
 
   return (
     <div key={game.id} className="game-card">
@@ -114,7 +140,7 @@ export default function GameCard({
           </div>
         </div>
 
-        <div className="game-options mt-4">
+        <div className="game-options flex mt-4 gap-2">
           {!progress ? (
             <div className="add-to-library game-card-btn" onClick={handleAddToLibrary}>
               {loadingLibrary ? (
@@ -124,16 +150,19 @@ export default function GameCard({
               )}
             </div>
           ) : (
-            <LibraryButton gameId={game.id} progress={progress} />
+            <LibraryButton gameId={game.id} progress={progress} remove={handleRemoveFromLibrary} />
           )}
-
-          <div className="add-to-wishlist game-card-btn ml-2" onClick={handleAddToWishlist}>
-            {loadingWishlist ? (
-              <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
-            ) : (
-              <GiftIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white" />
-            )}
-          </div>
+          {!wishlist ? (
+            <div className="add-to-wishlist game-card-btn" onClick={handleAddToWishlist}>
+              {loadingWishlist ? (
+                <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
+              ) : (
+                <GiftIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white" />
+              )}
+            </div>
+          ) : (
+            <WishlistButton remove={handleRemoveFromWishlist} />
+          )}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { register, login, logout, getSession } from '@/controllers/users'
-import { addToLibrary } from '@/controllers/library'
+import { addToLibrary, removeFromLibrary } from '@/controllers/library'
+import { addToWishlist, removeFromWishlist } from '@/controllers/wishlist'
 
 const router = Router()
 
@@ -10,5 +11,9 @@ router.post('/register', register)
 router.post('/login', login)
 
 router.post('/library/:id', addToLibrary)
+router.delete('/library/:id', removeFromLibrary)
+
+router.post('/wishlist/:id', addToWishlist)
+router.delete('/wishlist/:id', removeFromWishlist)
 
 export default router

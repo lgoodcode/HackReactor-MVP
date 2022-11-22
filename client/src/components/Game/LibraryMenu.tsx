@@ -77,7 +77,10 @@ export default function LibraryMenu() {
               <CheckIcon className="h-5 w-5 fill-green-500" aria-hidden="true" />
             )}
           </div>
-          <div className="library-menu-item hover:bg-red-500 fill-red-500 text-red-500 hover:text-white hover:fill-white">
+          <div
+            onClick={menu.remove}
+            className="library-menu-item hover:bg-red-500 fill-red-500 text-red-500 hover:text-white hover:fill-white"
+          >
             <TrashIcon width={ICON_SIZE} height={ICON_SIZE} className="pointer-events-none" />
             Delete
           </div>

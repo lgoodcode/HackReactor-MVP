@@ -48,3 +48,4 @@ to the encrypted password in the database.
 
 - Add error handling for when unsuccessful requests are made to the API, such as adding a
   game that doesn't exist or when the client is offline.
+- Don't render the cards until the data is loaded to prevent the weird black boxes

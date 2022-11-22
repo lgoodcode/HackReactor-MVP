@@ -43,12 +43,41 @@ export default function Games() {
     setPage((prevPage) => prevPage + 1)
   }
 
-  /** Handles update the local session state when the user adds a game to the library */
-  const handleUpdateLibrary = (game: LibraryGame) =>
-    setSession({ ...session!, library: session!.library.concat(game) })
-  /** Handles update the local session state when the user adds a game to the wishlist */
-  const handleUpdateWishlist = (game: WishlistGame) =>
-    setSession({ ...session!, wishlist: session!.wishlist.concat(game) })
+  /** Handles updating the local session state when the user modifies their library */
+  const handleUpdateLibrary = (game: LibraryGame, action: GameAction, progress?: GameProgress) => {
+    if (action === 'add') {
+      setSession({ ...session!, library: session!.library.concat(game) })
+    } else if (action === 'update' && progress) {
+      setSession({
+        ...session!,
+        library: session!.library.map((game) =>
+          game.id !== game.id
+            ? game
+            : {
+                ...game,
+                progress,
+              }
+        ),
+      })
+    } else if (action === 'remove') {
+      setSession({
+        ...session!,
+        library: session!.library.filter((g) => g.id !== game.id),
+      })
+    }
+  }
+
+  /** Handles updating the local session state when the user adds or removes a game to their wishlist */
+  const handleUpdateWishlist = (game: WishlistGame, action: GameAction) => {
+    if (action === 'add') {
+      setSession({ ...session!, wishlist: session!.wishlist.concat(game) })
+    } else if (action === 'remove') {
+      setSession({
+        ...session!,
+        wishlist: session!.wishlist.filter((g) => g.id !== game.id),
+      })
+    }
+  }
 
   /** Fetch games whenever the page changes (load more function) */
   useEffect(() => {

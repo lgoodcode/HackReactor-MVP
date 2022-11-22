@@ -1,12 +1,13 @@
 import { ReactComponent as GamepadIcon } from '@/assets/gamepad.svg'
 import { useStore } from '@/lib/fastContext'
 
-export type GameLibraryMenuProps = {
+export type LibraryButtonProps = {
   gameId: number
   progress: GameProgress
+  remove: () => void
 }
 
-export default function GameLibraryMenu({ gameId, progress }: GameLibraryMenuProps) {
+export default function LibraryButton({ gameId, progress, remove }: LibraryButtonProps) {
   const [menu, setMenu] = useStore<LibraryMenu>('libraryMenu')
   const handleLibraryMenu = (e: MouseEvent) => {
     setMenu({
@@ -16,6 +17,7 @@ export default function GameLibraryMenu({ gameId, progress }: GameLibraryMenuPro
       progress,
       x: e.pageX,
       y: e.pageY,
+      remove,
     })
   }
 

@@ -18,12 +18,16 @@ export declare global {
     libraryMenu: LibraryMenu
   }
 
+  export type GameAction = 'add' | 'update' | 'remove'
+
   export type LibraryMenu = {
     open: boolean
     gameId: number
     progress: GameProgress
     x: number
     y: number
+    /** Pass the function to remove the game from the button to the menu */
+    remove: () => void
   }
 
   export type Modal = {
