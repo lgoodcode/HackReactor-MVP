@@ -17,8 +17,8 @@ const ordering: Ordering[] = [
   { id: 4, name: 'Oldest', unavailable: false },
 ]
 
-const fetcher = (url: string, query = '') =>
-  fetch(url + `?key=${RAWG_API_KEY}&page_size=${PAGE_SIZE}&${query}`)
+const gameFetcher = (query = '') =>
+  fetch(RAWG_API_ENDPOINT + `?key=${RAWG_API_KEY}&page_size=${PAGE_SIZE}&${query}`)
     .then((res) => res.json())
     .then((res) => res.results)
 
@@ -35,22 +35,27 @@ export default function Games() {
   // Need to set the title in case redirected from other pages
   document.title = import.meta.env.VITE_APP_TITLE
 
+  /**
+   * Handles fetching more games from the API and adding them to the grid.
+   */
   const handleLoadMore = () => {
     setButtonLoading(true)
     setPage((prevPage) => prevPage + 1)
   }
 
-  // Handles update the local session state when the user adds a game to the library or wishlist
+  /** Handles update the local session state when the user adds a game to the library */
   const handleUpdateLibrary = (game: LibraryGame) =>
     setSession({ ...session!, library: session!.library.concat(game) })
+  /** Handles update the local session state when the user adds a game to the wishlist */
   const handleUpdateWishlist = (game: WishlistGame) =>
     setSession({ ...session!, wishlist: session!.wishlist.concat(game) })
 
-  // Fetch games whenever the page changes (load more)
+  /** Fetch games whenever the page changes (load more function) */
   useEffect(() => {
     if (page === 1 && cols[0].length) return
-
-    fetcher(RAWG_API_ENDPOINT, `page=${page}`).then((data) => {
+    // Fetch from the api, specifying the page
+    // TODO: add ordering for the filter
+    gameFetcher(`page=${page}`).then((data) => {
       for (let i = (page - 1) * PAGE_SIZE, j = 0; j < data.length; i++, j++) {
         cols[i % cols.length].push(data[j])
       }

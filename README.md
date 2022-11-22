@@ -43,3 +43,8 @@ UUIDs for the user.
 When creating the users, we use the `pgcrypto` extension to encrypt the password.\
 When logging in, we use the `pgcrypto` extension to encrypt the password and compare it
 to the encrypted password in the database.
+
+## TODO
+
+- Add error handling for when unsuccessful requests are made to the API, such as adding a
+  game that doesn't exist or when the client is offline.
