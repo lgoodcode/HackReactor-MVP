@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Popover, Transition } from '@headlessui/react'
-import { Fragment } from 'preact/jsx-runtime'
+import { Fragment } from 'preact/compat'
 import { ReactComponent as Search } from '../assets/search.svg'
 import { ReactComponent as User } from '../assets/user.svg'
 

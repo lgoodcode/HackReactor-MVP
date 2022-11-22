@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useEffect } from 'preact/hooks'
 import Navbar from './components/Navbar'
+import LibraryMenu from './components/Game/LibraryMenu'
 import Home from './pages/Home'
 import Auth from './pages/Auth'
 import PageNotFound from './pages/404'
@@ -8,6 +9,7 @@ import { useStore } from './lib/fastContext'
 
 export default function App() {
   const [session, setSession] = useStore<Session>('session')
+
   const logout = async () => {
     await fetch('/api/session', { method: 'DELETE' }).catch(console.error)
     // Redirect to the login page after logging out to force a refresh
@@ -37,6 +39,9 @@ export default function App() {
               <main className="w-full min-h-[calc(100vh-84px)] mx-auto xl:max-w-7xl centered flex-col">
                 <Home />
               </main>
+              <div id="portals">
+                <LibraryMenu />
+              </div>
             </>
           }
         />

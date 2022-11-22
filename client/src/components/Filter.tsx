@@ -1,5 +1,5 @@
 import { Listbox, Transition } from '@headlessui/react'
-import { Fragment } from 'preact/jsx-runtime'
+import { Fragment } from 'preact/compat'
 import { ReactComponent as CheckIcon } from '../assets/check.svg'
 import { ReactComponent as ChevronUpDownIcon } from '../assets/chevron-up-down.svg'
 

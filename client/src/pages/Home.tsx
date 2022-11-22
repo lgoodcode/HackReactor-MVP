@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks'
-import GameCard from '@/components/GameCard'
+import GameCard from '@/components/Game/GameCard'
 import Filter from '@/components/Filter'
 import CrossLoader from '@/components/Loaders/Cross'
 import SimpleLoader from '@/components/Loaders/Simple'
@@ -33,7 +33,7 @@ export default function Games() {
   )
 
   // Need to set the title in case redirected from other pages
-  document.title = 'MVP'
+  document.title = import.meta.env.VITE_APP_TITLE
 
   const handleLoadMore = () => {
     setButtonLoading(true)
@@ -70,8 +70,6 @@ export default function Games() {
     )
   }
 
-  console.log('sessoion', session)
-
   return (
     <section className="games-container w-full py-24">
       <div className="filtering mb-2 w-64">
@@ -102,7 +100,7 @@ export default function Games() {
                   key={game.id}
                   game={game}
                   session={true}
-                  library={library?.progress}
+                  progress={library?.progress}
                   wishlist={Boolean(wishlist)}
                   handleUpdateLibrary={handleUpdateLibrary}
                   handleUpdateWishlist={handleUpdateWishlist}
@@ -115,7 +113,7 @@ export default function Games() {
 
       <div className="w-full flex justify-center">
         <button
-          className="btn bg-lavender-500 hover:bg-lavender-400 px-6 py-3 rounded-md centered w-36"
+          className="btn w-36 px-6 py-3 rounded-md centered bg-lavender-500 hover:bg-lavender-400"
           onClick={handleLoadMore}
         >
           {buttonLoading ? <SimpleLoader /> : 'Load more'}

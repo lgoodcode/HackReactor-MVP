@@ -1,7 +1,49 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-plugin-svgr/client" />
+import type { JSX } from 'preact'
 
 export declare global {
+  // Extend the environment variables with the following types
+  export interface ImportMetaEnv {
+    readonly VITE_APP_TITLE: string
+    readonly VITE_RAWG_API_KEY: string
+    readonly VITE_API_URL: string
+  }
+}
+
+export declare global {
+  export type Store = {
+    session: Session
+    modal: Modal
+    libraryMenu: LibraryMenu
+  }
+
+  export type LibraryMenu = {
+    open: boolean
+    gameId: number
+    progress: GameProgress
+    x: number
+    y: number
+  }
+
+  export type Modal = {
+    overlay?: boolean
+    scrollLock?: boolean
+    content: JSX.Element | null
+  }
+
+  export type Session = {
+    id: string
+    library: LibraryGame[]
+    wishlist: WishlistGame[]
+  } | null
+
+  export interface Ordering {
+    id: number
+    name: string
+    unavailable: boolean
+  }
+
   export type GameProgress = 'pending' | 'in progress' | 'completed'
 
   export type LibraryGame = {
@@ -19,18 +61,6 @@ export declare global {
     game_id: number
     created_at: string
     updated_at: string
-  }
-
-  export type Session = {
-    id: string
-    library: LibraryGame[]
-    wishlist: WishlistGame[]
-  } | null
-
-  export interface Ordering {
-    id: number
-    name: string
-    unavailable: boolean
   }
 }
 

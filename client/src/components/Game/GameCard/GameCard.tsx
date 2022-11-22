@@ -1,26 +1,33 @@
 import { useState } from 'preact/hooks'
 import { useNavigate } from 'react-router-dom'
-import SimpleLoader from '../Loaders/Simple'
+import SimpleLoader from '@/components/Loaders/Simple'
+import LibraryButton from '@/components/Game/LibraryButton'
 import { ReactComponent as PlusIcon } from '@/assets/plus.svg'
 import { ReactComponent as GiftIcon } from '@/assets/gift.svg'
-import { ReactComponent as GamepadIcon } from '@/assets/gamepad.svg'
 import './GameCard.css'
 
 export type GameCardProps = {
   game: Game
   session?: boolean
-  library?: GameProgress
+  progress?: GameProgress
   wishlist?: boolean
-  handleUpdateLibrary?: (game: LibraryGame) => void
-  handleUpdateWishlist?: (game: WishlistGame) => void
+  menuOpen?: boolean
+  setMenuOpen?: (open: boolean) => void
+  handleUpdateLibrary: (game: LibraryGame) => void
+  handleUpdateWishlist: (game: WishlistGame) => void
 }
 
+const ICON_SIZE = 16
+
+/**
+ * Handles adding the game to the user's library or wishlist. Takes the game id and
+ * the type of list to add the game to. If the game was added it will return the game
+ * object with the progress set to pending.
+ */
 const handleAdd = async (id: number, type: 'library' | 'wishlist') => {
   try {
     const res = await fetch(`/api/${type}/${id}`, { method: 'POST' })
-
-    if (!res.ok) return null
-    return await res.json()
+    return res.ok ? await res.json() : null
   } catch (err) {
     console.error(err)
   }
@@ -29,7 +36,7 @@ const handleAdd = async (id: number, type: 'library' | 'wishlist') => {
 export default function GameCard({
   game,
   session,
-  library,
+  progress,
   wishlist,
   handleUpdateLibrary,
   handleUpdateWishlist,
@@ -44,9 +51,9 @@ export default function GameCard({
         setLoadingLibrary(true)
         handleAdd(game.id, 'library').then((game) => {
           setLoadingLibrary(false)
-
+          // If the game was returned, it was successful, so update the local session state
           if (game) {
-            handleUpdateLibrary!(game)
+            handleUpdateLibrary(game)
           }
         })
       }
@@ -56,9 +63,9 @@ export default function GameCard({
         setLoadingWishlist(true)
         handleAdd(game.id, 'wishlist').then((game) => {
           setLoadingWishlist(false)
-
+          // If the game was returned, it was successful, so update the local session state
           if (game) {
-            handleUpdateWishlist!(game)
+            handleUpdateWishlist(game)
           }
         })
       }
@@ -66,11 +73,10 @@ export default function GameCard({
   return (
     <div key={game.id} className="game-card">
       <div className="card-img overflow-hidden relative w-full h-[180px]">
-        {/* Using background-image over an img because of the fact that the image will be
-            restricted to the parent's dimensions. */}
-        <div
-          className="absolute inset-0 w-full h-full bg-[50%] bg-cover bg-no-repeat rounded-t-lg"
-          style={{ backgroundImage: `url(${game.background_image})` }}
+        <img
+          src={game.background_image}
+          alt={game.name}
+          className="absolute inset-0 w-full h-full object-cover rounded-t-lg"
         />
       </div>
 
@@ -109,25 +115,23 @@ export default function GameCard({
         </div>
 
         <div className="game-options mt-4">
-          {!library ? (
+          {!progress ? (
             <div className="add-to-library game-card-btn" onClick={handleAddToLibrary}>
               {loadingLibrary ? (
-                <SimpleLoader w={16} h={16} />
+                <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
               ) : (
-                <PlusIcon width={16} height={16} className="fill-white" />
+                <PlusIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white" />
               )}
             </div>
           ) : (
-            <div className="game-status game-card-btn centered gap-2 !bg-green-600 hover:!bg-green-500">
-              <GamepadIcon width={16} height={16} className="fill-white" />
-            </div>
+            <LibraryButton gameId={game.id} progress={progress} />
           )}
 
           <div className="add-to-wishlist game-card-btn ml-2" onClick={handleAddToWishlist}>
             {loadingWishlist ? (
-              <SimpleLoader w={16} h={16} />
+              <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
             ) : (
-              <GiftIcon width={16} height={16} className="fill-white" />
+              <GiftIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white" />
             )}
           </div>
         </div>

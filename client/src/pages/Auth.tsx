@@ -38,7 +38,7 @@ export default function AuthPage({ setSession }: AuthProps) {
   const [remember, setRememeber] = useState(Boolean(localStorage.getItem('email')) ?? false)
 
   // Set the page title
-  document.title = (signup ? 'Register' : 'Login') + ' | MVP'
+  document.title = (signup ? 'Register' : 'Login') + ` | ${import.meta.env.VITE_APP_TITLE}`
 
   // Toggles the remember me checkbox
   const handleToggle = () => setRememeber((prev) => !prev)

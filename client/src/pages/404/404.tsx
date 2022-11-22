@@ -4,7 +4,7 @@ import './404.css'
 export default function PageNotFound() {
   const navigate = useNavigate()
 
-  document.title = '404 | MVP'
+  document.title = `404 | ${import.meta.env.VITE_APP_TITLE}`
 
   return (
     <div className="min-h-screen centered flex-col mx-auto px-24 pt-12 pb-20">

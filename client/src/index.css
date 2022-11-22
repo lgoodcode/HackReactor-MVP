@@ -20,7 +20,11 @@
   }
 
   .game-card-btn {
-    @apply bg-purple-700 hover:bg-purple-400 w-fit p-2 rounded-md inline-flex items-center transition duration-150;
+    @apply bg-purple-700 hover:bg-purple-400 w-fit p-2 rounded-md inline-flex items-center transition-colors duration-150;
+  }
+
+  .library-menu-item {
+    @apply p-2 rounded-md font-medium flex flex-row items-center gap-4 cursor-pointer select-none transition-colors duration-150;
   }
 }
 
@@ -60,4 +64,8 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+#portals {
+  z-index: 999;
 }

@@ -3,12 +3,20 @@ import App from './App'
 import { createFastContext } from './lib/fastContext'
 import './index.css'
 
-type Store = {
-  session: Session
-}
-
 const { StoreProvider } = createFastContext<Store>({
   session: null,
+  modal: {
+    overlay: false,
+    scrollLock: false,
+    content: null,
+  },
+  libraryMenu: {
+    open: false,
+    gameId: -1,
+    progress: 'pending',
+    x: -1,
+    y: -1,
+  },
 })
 
 render(

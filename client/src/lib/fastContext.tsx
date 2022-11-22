@@ -1,5 +1,6 @@
 import { createContext, type ComponentChildren } from 'preact'
-import { useRef, useCallback, useContext, useState, useEffect } from 'preact/hooks'
+import { useRef, useCallback, useContext } from 'preact/hooks'
+import { useSyncExternalStore } from 'preact/compat'
 
 type Subscribers = {
   select: { [key: string]: Set<() => void> }
@@ -8,8 +9,8 @@ type Subscribers = {
 
 type StoreContext = {
   get: () => any
-  set: (key: string) => (value: any) => void
-  subscribe: (key: string) => (callback: () => void) => () => void
+  set: (key?: string) => (value: any) => void
+  subscribe: (key?: string) => (callback: () => void) => () => void
 }
 
 const StoreContext = createContext({} as StoreContext)
@@ -65,7 +66,7 @@ export function createFastContext<T>(intitialState: T) {
      * doesn't change on every render when we manually invoke it in `useExternalStoreSync`
      * in the `useStore` hook.
      */
-    const set = (key: string) =>
+    const set = (key?: string) =>
       useCallback((value: any) => {
         if (
           !subscribers.current ||
@@ -100,7 +101,7 @@ export function createFastContext<T>(intitialState: T) {
      * The returned function is a cleanup function that will be called when
      * the component unmounts.
      * */
-    const subscribe = (key: string) =>
+    const subscribe = (key?: string) =>
       useCallback((callback: () => void) => {
         if (key) {
           if (!subscribers.current.select[key]) {
@@ -141,50 +142,35 @@ export function createFastContext<T>(intitialState: T) {
 }
 
 /**
- * A basic hook that can be used to sync the store data with an external source. This is
- * equivalent to the React implementation but allowing it to be used with Preact.
- *
- * The store data is synced using useState and useEffect. The useEffect hook is used
- * to call the subscribe function when the component mounts and unmounts. The useState
- */
-const useSyncExternalStore = (
-  subscribe: (callback: () => void) => () => void,
-  getSnapshot: () => any
-) => {
-  const [state, setState] = useState(getSnapshot())
-
-  useEffect(() => {
-    return subscribe(() => setState(getSnapshot()))
-  }, [])
-
-  return state
-}
-
-/**
  * The hook to access the store.
  */
 export function useStore<T = any>(
-  key: string,
-  selector?: (key: string) => T
+  key?: string,
+  selector?: (key: string) => T | ((state: T) => T)
 ): [T, (value: T) => void] {
   const store = useContext(StoreContext)
 
   if (!store) {
     throw new Error('Store not found')
-  } else if (typeof key === 'function' || (!key && selector)) {
-    throw new Error('Cannot specify a selector without a key')
+    // If using just a selector on the entire state, swap the key and selector
+  } else if (typeof key === 'function' && !selector) {
+    selector = key
+    key = undefined
   }
-  let stateSelector: (key: string) => any | any
+
+  let stateSelector: (key: string) => T | ((state: T) => T) | T
 
   // If no key or selector is provided, return the entire store.
-  if (!key) {
+  if (!key && !selector) {
     stateSelector = (state: any) => state
+  } else if (!key && selector) {
+    stateSelector = (state: any) => selector!(state)
     // If a selector is provided, return the value returned by the selector.
-  } else if (selector) {
-    stateSelector = (state: any) => selector(state[key])
+  } else if (key && selector) {
+    stateSelector = (state: any) => selector!(state[key as string])
     // Otherwise, set the selector to the key and return the value of the key.
-  } else {
-    stateSelector = (state: any) => state[key]
+  } else if (key && !selector) {
+    stateSelector = (state: any) => state[key as string]
   }
 
   /**
@@ -195,5 +181,5 @@ export function useStore<T = any>(
   const state = useSyncExternalStore(store.subscribe(key), () => stateSelector(store.get()))
 
   // Return the tuple of the state and the setter function.
-  return [state, store.set(key)]
+  return [state as T, store.set(key)]
 }

@@ -19,6 +19,7 @@ Uses Vite to build the client. Added `express` with a simple server to serve the
 
 `VITE_RAWG_API_KEY` - API key for RAWG API, must be public for the client to use
 `VITE_API_URL` - URL for the API server
+`VITE_APP_TITLE` - Title of the app, used in the header
 
 
 ## **Server**
