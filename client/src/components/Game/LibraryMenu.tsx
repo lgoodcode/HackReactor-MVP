@@ -55,7 +55,7 @@ export default function LibraryMenu() {
         leaveTo="transform opacity-0 scale-95"
       >
         <div
-          className="absolute w-48 p-2 flex flex-col gap-1 bg-white text-gray-800 rounded-md shadow-lg"
+          className="absolute p-2 flex flex-col gap-1 bg-white text-gray-800 rounded-md shadow-lg"
           style={{ top: menu.y - 12, left: menu.x + 24 }}
         >
           <div
