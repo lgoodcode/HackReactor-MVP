@@ -29,7 +29,7 @@ export const updateInLibrary = async (req: Request, res: Response) => {
   const { id } = req.params
   const { progress } = req.query as { progress: GameProgress | undefined }
   const userId = req.session.user?.id
-  console.log('progress', progress)
+
   if (!userId) {
     return res.status(401).json({ error: 'Unauthorized' })
   } else if (!progress) {

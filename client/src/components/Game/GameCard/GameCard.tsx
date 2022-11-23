@@ -1,11 +1,8 @@
 import { useState } from 'preact/hooks'
 import { useNavigate } from 'react-router-dom'
-import SimpleLoader from '@/components/Loaders/Simple'
 import LibraryButton from '@/components/Game/LibraryButton'
-import { ReactComponent as PlusIcon } from '@/assets/plus.svg'
-import { ReactComponent as GiftIcon } from '@/assets/gift.svg'
+import WishlistButton from '@/components/Game/WishlistButton'
 import './GameCard.css'
-import WishlistButton from '../WishlistButton'
 
 export type GameCardProps = {
   game: Game
@@ -14,11 +11,9 @@ export type GameCardProps = {
   wishlist?: boolean
   menuOpen?: boolean
   setMenuOpen?: (open: boolean) => void
-  handleUpdateLibrary: (game: LibraryGame, action: GameAction) => void
-  handleUpdateWishlist: (game: WishlistGame, action: GameAction) => void
+  updateSessionLibrary: (game: LibraryGame, action: GameAction) => void
+  updateSessionWishlist: (game: WishlistGame, action: GameAction) => void
 }
-
-const ICON_SIZE = 16
 
 /**
  * Handles adding, updating, and removing a game to/from the user's library or wishlist.
@@ -49,8 +44,8 @@ export default function GameCard({
   session,
   progress,
   wishlist,
-  handleUpdateLibrary,
-  handleUpdateWishlist,
+  updateSessionLibrary,
+  updateSessionWishlist,
 }: GameCardProps) {
   const navigate = useNavigate()
   const [loadingLibrary, setLoadingLibrary] = useState(false)
@@ -64,7 +59,7 @@ export default function GameCard({
           setLoadingLibrary(false)
           // If the game was returned, it was successful, update the local session state
           if (game) {
-            handleUpdateLibrary(game, 'add')
+            updateSessionLibrary(game, 'add')
           }
         })
       }
@@ -74,7 +69,7 @@ export default function GameCard({
       setLoadingLibrary(false)
       // If the game was returned, it was successfully updated, update the local session state
       if (game) {
-        handleUpdateLibrary(game, 'update')
+        updateSessionLibrary(game, 'update')
       }
     })
   }
@@ -84,7 +79,7 @@ export default function GameCard({
       setLoadingLibrary(false)
       // If the game was returned, it was successfully removed, update the local session state
       if (game) {
-        handleUpdateLibrary(game, 'remove')
+        updateSessionLibrary(game, 'remove')
       }
     })
   }
@@ -96,7 +91,7 @@ export default function GameCard({
           setLoadingWishlist(false)
           // If the game was returned, it was successful, update the local session state
           if (game) {
-            handleUpdateWishlist(game, 'add')
+            updateSessionWishlist(game, 'add')
           }
         })
       }
@@ -106,7 +101,7 @@ export default function GameCard({
       setLoadingWishlist(false)
       // If the game was returned, it was successfully removed, update the local session state
       if (game) {
-        handleUpdateWishlist(game, 'remove')
+        updateSessionWishlist(game, 'remove')
       }
     })
   }
@@ -156,33 +151,20 @@ export default function GameCard({
         </div>
 
         <div className="game-options flex mt-4 gap-2">
-          {!progress ? (
-            <div className="add-to-library game-card-btn" onClick={addToLibrary}>
-              {loadingLibrary ? (
-                <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
-              ) : (
-                <PlusIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white" />
-              )}
-            </div>
-          ) : (
-            <LibraryButton
-              gameId={game.id}
-              progress={progress}
-              update={updateInLibrary}
-              remove={removeFromLibrary}
-            />
-          )}
-          {!wishlist ? (
-            <div className="add-to-wishlist game-card-btn" onClick={addToWishlist}>
-              {loadingWishlist ? (
-                <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
-              ) : (
-                <GiftIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white" />
-              )}
-            </div>
-          ) : (
-            <WishlistButton remove={removeFromWishlist} />
-          )}
+          <LibraryButton
+            gameId={game.id}
+            loading={loadingLibrary}
+            progress={progress}
+            add={addToLibrary}
+            update={updateInLibrary}
+            remove={removeFromLibrary}
+          />
+          <WishlistButton
+            loading={loadingWishlist}
+            added={Boolean(wishlist)}
+            add={addToWishlist}
+            remove={removeFromWishlist}
+          />
         </div>
       </div>
     </div>

@@ -1,26 +1,51 @@
-import { ReactComponent as GamepadIcon } from '@/assets/gamepad.svg'
 import { useStore } from '@/lib/fastContext'
+import SimpleLoader from '@/components/Loaders/Simple'
+import { ReactComponent as PlusIcon } from '@/assets/plus.svg'
+import { ReactComponent as GamepadIcon } from '@/assets/gamepad.svg'
 
 export type LibraryButtonProps = {
   gameId: number
-  progress: GameProgress
+  loading: boolean
+  progress: GameProgress | undefined
+  add: () => void
   update: (progress: GameProgress) => void
   remove: () => void
 }
 
-export default function LibraryButton({ gameId, progress, update, remove }: LibraryButtonProps) {
+const ICON_SIZE = 16
+
+export default function LibraryButton({
+  gameId,
+  loading,
+  progress,
+  add,
+  update,
+  remove,
+}: LibraryButtonProps) {
   const [menu, setMenu] = useStore<LibraryMenu>('libraryMenu')
   const handleLibraryMenu = (e: MouseEvent) => {
     setMenu({
       ...menu,
       open: true,
       gameId,
-      progress,
+      progress: progress!,
       x: e.pageX,
       y: e.pageY,
       update,
       remove,
     })
+  }
+
+  if (!progress) {
+    return (
+      <div className="add-to-library game-card-btn" onClick={add}>
+        {loading ? (
+          <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
+        ) : (
+          <PlusIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white" />
+        )}
+      </div>
+    )
   }
 
   return (
@@ -34,7 +59,11 @@ export default function LibraryButton({ gameId, progress, update, remove }: Libr
           : '!bg-green-600 hover:!bg-green-500'
       }`}
     >
-      <GamepadIcon width={16} height={16} className="fill-white pointer-events-none" />
+      <GamepadIcon
+        width={ICON_SIZE}
+        height={ICON_SIZE}
+        className="fill-white pointer-events-none"
+      />
     </div>
   )
 }

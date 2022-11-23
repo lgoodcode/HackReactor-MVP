@@ -44,7 +44,7 @@ export default function Games() {
   }
 
   /** Handles updating the local session state when the user modifies their library */
-  const handleUpdateLibrary = (game: LibraryGame, action: GameAction) => {
+  const updateSessionLibrary = (game: LibraryGame, action: GameAction) => {
     if (action === 'add') {
       setSession({ ...session!, library: session!.library.concat(game) })
     } else if (action === 'update') {
@@ -68,7 +68,7 @@ export default function Games() {
   }
 
   /** Handles updating the local session state when the user adds or removes a game to their wishlist */
-  const handleUpdateWishlist = (game: WishlistGame, action: GameAction) => {
+  const updateSessionWishlist = (game: WishlistGame, action: GameAction) => {
     if (action === 'add') {
       setSession({ ...session!, wishlist: session!.wishlist.concat(game) })
     } else if (action === 'remove') {
@@ -120,8 +120,8 @@ export default function Games() {
                   <GameCard
                     key={game.id}
                     game={game}
-                    handleUpdateLibrary={handleUpdateLibrary}
-                    handleUpdateWishlist={handleUpdateWishlist}
+                    updateSessionLibrary={updateSessionLibrary}
+                    updateSessionWishlist={updateSessionWishlist}
                   />
                 )
 
@@ -136,8 +136,8 @@ export default function Games() {
                   session={true}
                   progress={library?.progress}
                   wishlist={Boolean(wishlist)}
-                  handleUpdateLibrary={handleUpdateLibrary}
-                  handleUpdateWishlist={handleUpdateWishlist}
+                  updateSessionLibrary={updateSessionLibrary}
+                  updateSessionWishlist={updateSessionWishlist}
                 />
               )
             })}
