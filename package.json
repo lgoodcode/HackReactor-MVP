@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "Lawrence Good",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "client": "npm run preview --prefix client",
     "server": "npm start --prefix server",
