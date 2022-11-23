@@ -16,6 +16,8 @@ const { StoreProvider } = createFastContext<Store>({
     progress: 'pending',
     x: -1,
     y: -1,
+    update: () => null,
+    remove: () => null,
   },
 })
 

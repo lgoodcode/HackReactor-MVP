@@ -26,7 +26,7 @@ export declare global {
     progress: GameProgress
     x: number
     y: number
-    /** Pass the function to remove the game from the button to the menu */
+    update: (progress: GameProgress) => void
     remove: () => void
   }
 

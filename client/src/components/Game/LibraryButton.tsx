@@ -4,10 +4,11 @@ import { useStore } from '@/lib/fastContext'
 export type LibraryButtonProps = {
   gameId: number
   progress: GameProgress
+  update: (progress: GameProgress) => void
   remove: () => void
 }
 
-export default function LibraryButton({ gameId, progress, remove }: LibraryButtonProps) {
+export default function LibraryButton({ gameId, progress, update, remove }: LibraryButtonProps) {
   const [menu, setMenu] = useStore<LibraryMenu>('libraryMenu')
   const handleLibraryMenu = (e: MouseEvent) => {
     setMenu({
@@ -17,6 +18,7 @@ export default function LibraryButton({ gameId, progress, remove }: LibraryButto
       progress,
       x: e.pageX,
       y: e.pageY,
+      update,
       remove,
     })
   }

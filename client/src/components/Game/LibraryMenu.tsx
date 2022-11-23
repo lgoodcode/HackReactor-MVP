@@ -13,7 +13,7 @@ const ICON_SIZE = 24
 export default function LibraryMenu() {
   const menuRef = useRef<HTMLDivElement>(null)
   const [menu, setMenu] = useStore<LibraryMenu>('libraryMenu')
-  // Close the menu if the user selects an option or clicks outside of it
+  /** Close the menu if the user selects an option or clicks outside of it */
   const handleMenuClick = (e: any) => {
     if (
       menu.open &&
@@ -23,6 +23,12 @@ export default function LibraryMenu() {
         ...menu,
         open: false,
       })
+    }
+  }
+  /** Only update the game if the selected progress is not the same as the current */
+  const handleUpdate = (progress: GameProgress) => () => {
+    if (progress !== menu.progress) {
+      menu.update(progress)
     }
   }
 
@@ -52,14 +58,20 @@ export default function LibraryMenu() {
           className="absolute w-48 p-2 flex flex-col gap-1 bg-white text-gray-800 rounded-md shadow-lg"
           style={{ top: menu.y - 12, left: menu.x + 24 }}
         >
-          <div className="library-menu-item hover:text-white hover:bg-cool-500">
+          <div
+            onClick={handleUpdate('pending')}
+            className="library-menu-item hover:text-white hover:bg-cool-500"
+          >
             <HourglassIcon width={ICON_SIZE} height={ICON_SIZE} className="pointer-events-none" />
             Pending
             {menu.progress === 'pending' && (
               <CheckIcon className="h-5 w-5 fill-green-500" aria-hidden="true" />
             )}
           </div>
-          <div className="library-menu-item hover:text-white hover:bg-cool-500">
+          <div
+            onClick={handleUpdate('in progress')}
+            className="library-menu-item hover:text-white hover:bg-cool-500"
+          >
             <GameControllerIcon
               width={ICON_SIZE}
               height={ICON_SIZE}
@@ -70,7 +82,10 @@ export default function LibraryMenu() {
               <CheckIcon className="h-5 w-5 fill-green-500" aria-hidden="true" />
             )}
           </div>
-          <div className="library-menu-item hover:text-white hover:bg-cool-500">
+          <div
+            onClick={handleUpdate('completed')}
+            className="library-menu-item hover:text-white hover:bg-cool-500"
+          >
             <TrophyIcon width={ICON_SIZE} height={ICON_SIZE} className="pointer-events-none" />
             Completed
             {menu.progress === 'completed' && (

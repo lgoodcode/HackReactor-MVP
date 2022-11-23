@@ -36,7 +36,9 @@ export const removeFromWishlist = async (req: Request, res: Response) => {
   }
 
   // Update the user's wishlist in the session
-  req.session!.user!.wishlist = req.session!.user!.wishlist.filter((game) => game.id !== Number(id))
+  req.session!.user!.wishlist = req.session!.user!.wishlist.filter(
+    (game) => game.game_id !== Number(id)
+  )
 
   res.status(200).json(game)
 }

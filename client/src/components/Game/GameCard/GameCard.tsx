@@ -14,7 +14,7 @@ export type GameCardProps = {
   wishlist?: boolean
   menuOpen?: boolean
   setMenuOpen?: (open: boolean) => void
-  handleUpdateLibrary: (game: LibraryGame, action: GameAction, progress?: GameProgress) => void
+  handleUpdateLibrary: (game: LibraryGame, action: GameAction) => void
   handleUpdateWishlist: (game: WishlistGame, action: GameAction) => void
 }
 
@@ -26,11 +26,16 @@ const ICON_SIZE = 16
  * will return the game object with the progress set to pending.
  */
 function handleGame<T = any>(action: GameAction) {
-  return async function (id: number, type: 'library' | 'wishlist') {
+  return async function (id: number, type: 'library' | 'wishlist', progress?: GameProgress) {
     try {
-      const res = await fetch(`/api/${type}/${id}`, {
-        method: action === 'add' ? 'POST' : action === 'update' ? 'PUT' : 'DELETE',
-      })
+      // Because the PUT method doesn't use the body, we send the updated progress value
+      // as a query parameter.
+      const res = await fetch(
+        `/api/${type}/${id}${action !== 'update' ? '' : '?progress=' + progress}`,
+        {
+          method: action === 'add' ? 'POST' : action === 'update' ? 'PUT' : 'DELETE',
+        }
+      )
       return res.ok ? ((await res.json()) as T) : null
     } catch (err) {
       console.error(err)
@@ -51,45 +56,55 @@ export default function GameCard({
   const [loadingLibrary, setLoadingLibrary] = useState(false)
   const [loadingWishlist, setLoadingWishlist] = useState(false)
   // Handlers to add the game to the library or wishlist and redirects to the login page if not logged in
-  const handleAddToLibrary = !session
+  const addToLibrary = !session
     ? () => navigate('/login')
     : () => {
         setLoadingLibrary(true)
         handleGame<LibraryGame>('add')(game.id, 'library').then((game) => {
           setLoadingLibrary(false)
-          // If the game was returned, it was successful, so update the local session state
+          // If the game was returned, it was successful, update the local session state
           if (game) {
             handleUpdateLibrary(game, 'add')
           }
         })
       }
-  const handleAddToWishlist = !session
-    ? () => navigate('/login')
-    : () => {
-        setLoadingWishlist(true)
-        handleGame<WishlistGame>('add')(game.id, 'wishlist').then((game) => {
-          setLoadingWishlist(false)
-          // If the game was returned, it was successful, so update the local session state
-          if (game) {
-            handleUpdateWishlist(game, 'add')
-          }
-        })
+  const updateInLibrary = (progress: GameProgress) => {
+    setLoadingLibrary(true)
+    handleGame<LibraryGame>('update')(game.id, 'library', progress).then((game) => {
+      setLoadingLibrary(false)
+      // If the game was returned, it was successfully updated, update the local session state
+      if (game) {
+        handleUpdateLibrary(game, 'update')
       }
-  const handleRemoveFromLibrary = () => {
+    })
+  }
+  const removeFromLibrary = () => {
     setLoadingLibrary(true)
     handleGame<LibraryGame>('remove')(game.id, 'library').then((game) => {
       setLoadingLibrary(false)
-      // If the game was returned, it was successfully removed, so update the local session state
+      // If the game was returned, it was successfully removed, update the local session state
       if (game) {
         handleUpdateLibrary(game, 'remove')
       }
     })
   }
-  const handleRemoveFromWishlist = () => {
+  const addToWishlist = !session
+    ? () => navigate('/login')
+    : () => {
+        setLoadingWishlist(true)
+        handleGame<WishlistGame>('add')(game.id, 'wishlist').then((game) => {
+          setLoadingWishlist(false)
+          // If the game was returned, it was successful, update the local session state
+          if (game) {
+            handleUpdateWishlist(game, 'add')
+          }
+        })
+      }
+  const removeFromWishlist = () => {
     setLoadingWishlist(true)
     handleGame<WishlistGame>('remove')(game.id, 'wishlist').then((game) => {
       setLoadingWishlist(false)
-      // If the game was returned, it was successfully removed, so update the local session state
+      // If the game was returned, it was successfully removed, update the local session state
       if (game) {
         handleUpdateWishlist(game, 'remove')
       }
@@ -142,7 +157,7 @@ export default function GameCard({
 
         <div className="game-options flex mt-4 gap-2">
           {!progress ? (
-            <div className="add-to-library game-card-btn" onClick={handleAddToLibrary}>
+            <div className="add-to-library game-card-btn" onClick={addToLibrary}>
               {loadingLibrary ? (
                 <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
               ) : (
@@ -150,10 +165,15 @@ export default function GameCard({
               )}
             </div>
           ) : (
-            <LibraryButton gameId={game.id} progress={progress} remove={handleRemoveFromLibrary} />
+            <LibraryButton
+              gameId={game.id}
+              progress={progress}
+              update={updateInLibrary}
+              remove={removeFromLibrary}
+            />
           )}
           {!wishlist ? (
-            <div className="add-to-wishlist game-card-btn" onClick={handleAddToWishlist}>
+            <div className="add-to-wishlist game-card-btn" onClick={addToWishlist}>
               {loadingWishlist ? (
                 <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
               ) : (
@@ -161,7 +181,7 @@ export default function GameCard({
               )}
             </div>
           ) : (
-            <WishlistButton remove={handleRemoveFromWishlist} />
+            <WishlistButton remove={removeFromWishlist} />
           )}
         </div>
       </div>

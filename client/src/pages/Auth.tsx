@@ -113,7 +113,7 @@ export default function AuthPage({ setSession }: AuthProps) {
               authenticating || submitting || submitted ? 'centered' : 'hidden',
             ].join(' ')}
           >
-            <SimpleLoader />
+            <SimpleLoader w={48} h={48} />
           </div>
 
           <form

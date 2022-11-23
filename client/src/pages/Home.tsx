@@ -44,25 +44,25 @@ export default function Games() {
   }
 
   /** Handles updating the local session state when the user modifies their library */
-  const handleUpdateLibrary = (game: LibraryGame, action: GameAction, progress?: GameProgress) => {
+  const handleUpdateLibrary = (game: LibraryGame, action: GameAction) => {
     if (action === 'add') {
       setSession({ ...session!, library: session!.library.concat(game) })
-    } else if (action === 'update' && progress) {
+    } else if (action === 'update') {
       setSession({
         ...session!,
-        library: session!.library.map((game) =>
-          game.id !== game.id
-            ? game
+        library: session!.library.map((g) =>
+          game.game_id !== g.game_id
+            ? g
             : {
-                ...game,
-                progress,
+                ...g,
+                progress: game.progress,
               }
         ),
       })
     } else if (action === 'remove') {
       setSession({
         ...session!,
-        library: session!.library.filter((g) => g.id !== game.id),
+        library: session!.library.filter((g) => g.game_id !== game.game_id),
       })
     }
   }
@@ -74,7 +74,7 @@ export default function Games() {
     } else if (action === 'remove') {
       setSession({
         ...session!,
-        wishlist: session!.wishlist.filter((g) => g.id !== game.id),
+        wishlist: session!.wishlist.filter((g) => g.game_id !== game.game_id),
       })
     }
   }
@@ -114,7 +114,7 @@ export default function Games() {
         {cols.map((games, i) => (
           <div key={i}>
             {games.map((game) => {
-              // TODO: add state to manage which games were already checked
+              // TODO: add state to manage which games were already checked when loading more
               if (!session)
                 return (
                   <GameCard
