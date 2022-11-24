@@ -123,8 +123,8 @@ export default function AuthPage({ setSession }: AuthProps) {
           >
             <div className="form-top">
               <a href="/" className="centered cursor-pointer">
-                <img src="/vite.svg" alt="MVP logo" width={64} height={64} />
-                <h3 className="text-5xl ml-2 text-white font-mont">MVP</h3>
+                <img src="/menelaus.svg" alt="MVP logo" width={172} height={172} />
+                {/* <h3 className="text-5xl ml-2 text-white font-mont">Menelaus</h3> */}
               </a>
 
               <div className="mt-6 sm:mt-8 text-center">

@@ -4,6 +4,7 @@ import { Fragment } from 'preact/compat'
 import { ReactComponent as Search } from '../assets/search.svg'
 import { ReactComponent as User } from '../assets/user.svg'
 
+const ICON_SIZE = 56
 const dropdownItems = [
   {
     name: 'My Games',
@@ -29,8 +30,8 @@ export default function Navbar({ session, logout }: NavbarProps) {
   return (
     <div className="navbar h-[84px] px-36 py-2 w-full bg-transparent flex justify-between">
       <div onClick={handleLogoClick} className="logo flex items-center select-none cursor-pointer">
-        <img src="/vite.svg" alt="logo" className="w-[48px] h-[48px]" />
-        <h1 className="text-4xl font-medium ml-2 font-mont">MVP</h1>
+        <img src="/logo.svg" alt="logo" width={ICON_SIZE} height={ICON_SIZE} />
+        <h1 className="text-4xl font-medium ml-2 font-mont">Menelaus</h1>
       </div>
 
       <div className="search flex items-center">

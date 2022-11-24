@@ -1,0 +1,47 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 375" width="500" height="500">
+	<title>logo-svg</title>
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m0 130h218v220.44h-218z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp2">
+			<path d="m157 25h218v325.44h-218z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp3">
+			<path d="m0 325h181v25.44h-181z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp4">
+			<path d="m157 73h218v277.44h-218z"/>
+		</clipPath>
+	</defs>
+	<style>
+		.s0 { opacity: .4;fill: #38b6ff } 
+		.s1 { fill: #83858c } 
+		.s2 { fill: #2493d4 } 
+		.s3 { fill: #68696e } 
+		.s4 { fill: #8b8d93 } 
+	</style>
+	<g id="Clip-Path" clip-path="url(#cp1)">
+		<g id="Layer">
+			<path id="Layer" fill-rule="evenodd" class="s0" d="m91.2 297.6h60.7l30.4-52.7 5.2-9 5.2 9 25.2 43.7-35.6 61.7h-182.3l126.7-219.8h60.8z"/>
+		</g>
+	</g>
+	<g id="Clip-Path" clip-path="url(#cp2)">
+		<g id="Layer">
+			<path id="Layer" fill-rule="evenodd" class="s1" d="m314.2 350.3l-14-24.3-16.4-28.4-79.6-138.2-16.7-28.9-16.4-28.4-14-24.3 30.4-52.7 93.7 162.6 93.8 162.6z"/>
+		</g>
+	</g>
+	<path id="Layer" fill-rule="evenodd" class="s2" d="m91.2 297.6l-49.2 28.4 98.3-170.5 47.2-25z"/>
+	<g id="Clip-Path" clip-path="url(#cp3)">
+		<g id="Layer">
+			<path id="Layer" fill-rule="evenodd" class="s2" d="m167.3 326l13.2 24.3h-180.5l42-24.3z"/>
+		</g>
+	</g>
+	<path id="Layer" fill-rule="evenodd" class="s2" d="m187.5 235.9l1.9 50.4-6.3 11.3-15.8 28.4-15.4-28.4z"/>
+	<g id="Clip-Path" clip-path="url(#cp4)">
+		<g id="Layer">
+			<path id="Layer" fill-rule="evenodd" class="s3" d="m187.5 130.5l-16.4-28.4-14-24.3 30.4-4.2 145.5 252.4 42 24.3h-60.8l-14-24.3-16.4-28.4-79.6-138.2z"/>
+		</g>
+	</g>
+	<path id="Layer" fill-rule="evenodd" class="s4" d="m157.1 77.8l30.4-52.7v48.5z"/>
+</svg>
