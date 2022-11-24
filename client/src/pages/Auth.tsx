@@ -67,7 +67,9 @@ export default function AuthPage({ setSession }: AuthProps) {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.text())
+      })
       .catch((err) => {
         console.error(err)
         return err.message

@@ -48,7 +48,6 @@ export default function Games() {
 
   /** Handles changing the ordering of the games */
   const handleOrderingChange = (order: Ordering) => {
-    console.log(order)
     setOrdering(order)
     setPage(1)
   }

@@ -10,7 +10,6 @@ export type FilterProps = {
 }
 
 export default function Filter({ data, selected, setSelected }: FilterProps) {
-  console.log('selected', selected)
   return (
     <Listbox value={selected} onChange={setSelected}>
       <div className="relative mt-1 text-gray-100 shadow-md">
