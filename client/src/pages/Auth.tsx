@@ -7,6 +7,16 @@ import Input from '@/components/Input'
 
 type Data = Record<'email' | 'password', string>
 
+export type AuthProps = {
+  setSession: (session: Session) => void
+}
+
+const API_URL = import.meta.env.VITE_API_URL
+
+if (!API_URL) {
+  throw new Error('API_URL is not defined')
+}
+
 const validations: Validations<Data> = {
   email: {
     required: 'Please enter your email address',
@@ -22,10 +32,6 @@ const validations: Validations<Data> = {
       message: 'Password must be at least 8 characters, contain a number, and a special character',
     },
   },
-}
-
-export type AuthProps = {
-  setSession: (session: Session) => void
 }
 
 export default function AuthPage({ setSession }: AuthProps) {
@@ -54,7 +60,7 @@ export default function AuthPage({ setSession }: AuthProps) {
     setAuthenticating(true)
 
     const endpoint = signup ? '/register' : '/login'
-    const user = await fetch('/api' + endpoint, {
+    const user = await fetch(API_URL + endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

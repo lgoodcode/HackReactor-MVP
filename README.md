@@ -51,3 +51,5 @@ to the encrypted password in the database.
 - Don't render the cards until the data is loaded to prevent the weird black boxes
 - Add search feature
 - Add additional information expand on card hover
+
+- ! Create API keys for each user
