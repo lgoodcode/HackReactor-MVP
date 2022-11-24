@@ -42,10 +42,22 @@ export declare global {
     wishlist: WishlistGame[]
   } | null
 
+  export type RAWG_ORDERING =
+    | 'none'
+    | 'name'
+    | '-name'
+    | 'released'
+    | '-released'
+    | 'added'
+    | '-added'
+    | 'rating'
+    | '-rating'
+
   export interface Ordering {
     id: number
     name: string
     unavailable: boolean
+    value: RAWG_ORDERING
   }
 
   export type GameProgress = 'pending' | 'in progress' | 'completed'

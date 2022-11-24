@@ -10,6 +10,7 @@ export type FilterProps = {
 }
 
 export default function Filter({ data, selected, setSelected }: FilterProps) {
+  console.log('selected', selected)
   return (
     <Listbox value={selected} onChange={setSelected}>
       <div className="relative mt-1 text-gray-100 shadow-md">
@@ -37,18 +38,20 @@ export default function Filter({ data, selected, setSelected }: FilterProps) {
                 }
                 value={item}
               >
-                {({ selected }: { selected: Ordering }) => (
-                  <>
-                    <span className={`block truncate ${selected ? 'font-normal' : 'font-medium'}`}>
-                      {item.name}
+                <>
+                  <span
+                    className={`block truncate ${
+                      selected.id === item.id ? 'font-normal' : 'font-medium'
+                    }`}
+                  >
+                    {item.name}
+                  </span>
+                  {selected.id === item.id ? (
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                      <CheckIcon className="h-5 w-5 fill-green-500" aria-hidden="true" />
                     </span>
-                    {selected ? (
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                        <CheckIcon className="h-5 w-5 fill-green-500" aria-hidden="true" />
-                      </span>
-                    ) : null}
-                  </>
-                )}
+                  ) : null}
+                </>
               </Listbox.Option>
             ))}
           </Listbox.Options>
