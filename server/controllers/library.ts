@@ -10,13 +10,13 @@ export const addToLibrary = async (req: Request, res: Response) => {
   const userId = req.session.user?.id
 
   if (!userId) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    return res.status(401).json({ message: 'Unauthorized' })
   }
 
   const game = await add(userId, id)
 
   if (!game) {
-    return res.status(400).json({ error: 'Failed to add game to library' })
+    return res.status(400).json({ message: 'Failed to add game to library' })
   }
 
   // Update the user's library in the session
@@ -31,15 +31,15 @@ export const updateInLibrary = async (req: Request, res: Response) => {
   const userId = req.session.user?.id
 
   if (!userId) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    return res.status(401).json({ message: 'Unauthorized' })
   } else if (!progress) {
-    return res.status(400).json({ error: 'Missing progress query value' })
+    return res.status(400).json({ message: 'Missing progress query value' })
   }
 
   const game = await update(userId, id, progress)
 
   if (!game) {
-    return res.status(400).json({ error: 'Failed to update game in library' })
+    return res.status(400).json({ message: 'Failed to update game in library' })
   }
 
   // Update the user's library in the session
@@ -58,13 +58,13 @@ export const removeFromLibrary = async (req: Request, res: Response) => {
   const userId = req.session.user?.id
 
   if (!userId) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    return res.status(401).json({ message: 'Unauthorized' })
   }
 
   const game = await remove(userId, id)
 
   if (!game) {
-    return res.status(400).json({ error: 'Failed to remove game from library' })
+    return res.status(400).json({ message: 'Failed to remove game from library' })
   }
 
   // Update the user's wishlist in the session

@@ -6,13 +6,13 @@ export const addToWishlist = async (req: Request, res: Response) => {
   const userId = req.session.user?.id
 
   if (!userId) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    return res.status(401).json({ message: 'Unauthorized' })
   }
 
   const game = await add(userId, id)
 
   if (!game) {
-    return res.status(400).json({ error: 'Failed to add game to wishlist' })
+    return res.status(400).json({ message: 'Failed to add game to wishlist' })
   }
 
   // Update the user's wishlist in the session
@@ -26,13 +26,13 @@ export const removeFromWishlist = async (req: Request, res: Response) => {
   const userId = req.session.user?.id
 
   if (!userId) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    return res.status(401).json({ message: 'Unauthorized' })
   }
 
   const game = await remove(userId, id)
 
   if (!game) {
-    return res.status(400).json({ error: 'Failed to remove game from wishlist' })
+    return res.status(400).json({ message: 'Failed to remove game from wishlist' })
   }
 
   // Update the user's wishlist in the session

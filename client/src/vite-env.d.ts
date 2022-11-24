@@ -82,6 +82,13 @@ export declare global {
 
 // The following types are from the API
 export declare global {
+  export interface RAWGQuery {
+    count: number
+    next: string
+    previous: string | null
+    results: RAWGGame[]
+  }
+
   export interface Game {
     id: number
     slug: string

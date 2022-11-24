@@ -2,6 +2,7 @@ import { useState } from 'preact/hooks'
 import { useNavigate } from 'react-router-dom'
 import LibraryButton from '@/components/Game/LibraryButton'
 import WishlistButton from '@/components/Game/WishlistButton'
+import apiFetcher from '@/utils/apiFetcher'
 import './GameCard.css'
 
 export type GameCardProps = {
@@ -22,20 +23,19 @@ export type GameCardProps = {
  */
 function handleGame<T = any>(action: GameAction) {
   return async function (id: number, type: 'library' | 'wishlist', progress?: GameProgress) {
-    try {
-      // Because the PUT method doesn't use the body, we send the updated progress value
-      // as a query parameter.
-      const res = await fetch(
-        `/api/${type}/${id}${action !== 'update' ? '' : '?progress=' + progress}`,
-        {
-          method: action === 'add' ? 'POST' : action === 'update' ? 'PUT' : 'DELETE',
-        }
-      )
-      return res.ok ? ((await res.json()) as T) : null
-    } catch (err) {
-      console.error(err)
+    const { data, error } = await apiFetcher<T>(
+      `${type}/${id}${action !== 'update' ? '' : '?progress=' + progress}`,
+      {
+        credentials: 'include',
+        method: action === 'add' ? 'POST' : action === 'update' ? 'PUT' : 'DELETE',
+      }
+    )
+
+    if (error) {
+      console.error(error)
       return null
     }
+    return data
   }
 }
 

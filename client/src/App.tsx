@@ -6,12 +6,13 @@ import Home from './pages/Home'
 import Auth from './pages/Auth'
 import PageNotFound from './pages/404'
 import { useStore } from './lib/fastContext'
+import apiFetcher from './utils/apiFetcher'
 
 export default function App() {
   const [session, setSession] = useStore<Session>('session')
 
   const logout = async () => {
-    await fetch('/api/session', { method: 'DELETE' }).catch(console.error)
+    await apiFetcher('/session', { method: 'DELETE' })
     // Redirect to the login page after logging out to force a refresh
     window.location.assign('/')
   }
@@ -19,13 +20,12 @@ export default function App() {
   // Check if the user is logged in on page load via the cookies, if so, get the session
   // and set it in the store
   useEffect(() => {
-    fetch('/api/session')
-      .then((res) => res.json())
-      .then(setSession)
-      .catch((err) => {
-        console.error(err)
-        setSession(null)
-      })
+    apiFetcher('/session').then(({ data, error }) => {
+      if (error) {
+        return setSession(null)
+      }
+      setSession(data)
+    })
   }, [])
 
   return (

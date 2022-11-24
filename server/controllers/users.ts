@@ -22,13 +22,13 @@ export const register = async (req: Request, res: Response) => {
 
   if (!email || !password) {
     console.error('Missing email or password')
-    return res.status(400).json({ error: 'Missing email or password' })
+    return res.status(400).json({ message: 'Missing email or password' })
   }
 
   const id = await createUser(sanitizeHtml(email), sanitizeHtml(password))
 
   if (!id) {
-    return res.status(400).json({ error: 'Email already in use' })
+    return res.status(400).json({ message: 'Email already in use' })
   }
 
   const library = await getLibrary(id)
@@ -47,13 +47,13 @@ export const login = async (req: Request, res: Response) => {
 
   if (!email || !password) {
     console.error('Missing email or password')
-    return res.status(400).json({ error: 'Missing email or password' })
+    return res.status(400).json({ message: 'Missing email or password' })
   }
 
   const id = await authenticate(sanitizeHtml(email), sanitizeHtml(password))
 
   if (!id) {
-    return res.status(400).json({ error: 'Invalid email or password' })
+    return res.status(400).json({ message: 'Invalid email or password' })
   }
 
   const library = (await getLibrary(id)) || []

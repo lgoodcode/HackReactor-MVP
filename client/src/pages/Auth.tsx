@@ -1,20 +1,15 @@
 import { useState } from 'preact/hooks'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { useForm, type Validations } from '@/hooks/useForm'
 import { emailRegex, passwordRegex } from '@/utils/regex'
 import SimpleLoader from '@/components/Loaders/Simple'
 import Input from '@/components/Input'
+import apiFetcher from '@/utils/apiFetcher'
 
 type Data = Record<'email' | 'password', string>
 
 export type AuthProps = {
   setSession: (session: Session) => void
-}
-
-const API_URL = import.meta.env.VITE_API_URL
-
-if (!API_URL) {
-  throw new Error('API_URL is not defined')
 }
 
 const validations: Validations<Data> = {
@@ -60,23 +55,14 @@ export default function AuthPage({ setSession }: AuthProps) {
     setAuthenticating(true)
 
     const endpoint = signup ? '/register' : '/login'
-    const user = await fetch(API_URL + endpoint, {
+    const { data: user, error } = await apiFetcher(endpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      credentials: 'include',
       body: JSON.stringify(data),
     })
-      .then((res) => {
-        console.log(res.text())
-      })
-      .catch((err) => {
-        console.error(err)
-        return err.message
-      })
 
-    if ('error' in user) {
-      setServerError(user.error)
+    if (error) {
+      setServerError(error.message)
       setAuthenticating(false)
       return false
     }
@@ -93,7 +79,7 @@ export default function AuthPage({ setSession }: AuthProps) {
   }
 
   // Hook to handle all the validation and form state
-  const { submitting, submitted, register, handleSubmit } = useForm<Data>({
+  const { submitting, register, handleSubmit } = useForm<Data>({
     initialValues: {
       email: rememberedEmail,
     },
@@ -105,7 +91,7 @@ export default function AuthPage({ setSession }: AuthProps) {
   })
 
   return (
-    <div className="centered h-screen mx-4 sm:mx-0 sm:py-8 lg:my-0 lg:py-0">
+    <div className="centered min-h-screen mx-4 sm:mx-0 sm:py-8 lg:py-8 ">
       <div className="container max-w-sm sm:max-w-md my-8 lg:my-0">
         <div className="form-container relative w-full rounded-xl shadow-lg bg-purple-500">
           <div
@@ -118,7 +104,7 @@ export default function AuthPage({ setSession }: AuthProps) {
               'z-20',
               'bg-gray-900',
               'opacity-75',
-              authenticating || submitting || submitted ? 'centered' : 'hidden',
+              authenticating || submitting ? 'centered' : 'hidden',
             ].join(' ')}
           >
             <SimpleLoader w={48} h={48} />
@@ -127,13 +113,13 @@ export default function AuthPage({ setSession }: AuthProps) {
           <form
             onSubmit={handleSubmit}
             noValidate
-            className="relative w-full py-10 sm:py-12 md:py-16 px-4 sm:px-10"
+            className="relative w-full pt-6 pb-10 sn:pt-8 sm:pb-12 md:pt-12 md:pb-16 px-4 sm:px-10"
           >
             <div className="form-top">
-              <a href="/" className="centered cursor-pointer">
+              <Link to="/" className="centered cursor-pointer">
                 <img src="/menelaus.svg" alt="MVP logo" width={172} height={172} />
                 {/* <h3 className="text-5xl ml-2 text-white font-mont">Menelaus</h3> */}
-              </a>
+              </Link>
 
               <div className="mt-6 sm:mt-8 text-center">
                 <span className="text-gray-50">
@@ -185,9 +171,9 @@ export default function AuthPage({ setSession }: AuthProps) {
                 </div>
 
                 <div>
-                  <a href="/forgot-password" className="link">
+                  <Link to="/forgot-password" className="link">
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

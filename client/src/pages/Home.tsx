@@ -4,6 +4,7 @@ import Filter from '@/components/Filter'
 import CrossLoader from '@/components/Loaders/Cross'
 import SimpleLoader from '@/components/Loaders/Simple'
 import { useStore } from '@/lib/fastContext'
+import fetcher from '@/utils/fetcher'
 
 const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY
 const RAWG_API_ENDPOINT = 'https://api.rawg.io/api/games'
@@ -18,13 +19,18 @@ const ORDERINGS: Ordering[] = [
   { id: 5, name: 'Oldest', unavailable: false, value: 'released' },
 ]
 
-const gameFetcher = (page = 1, ordering: RAWG_ORDERING = 'none') =>
-  fetch(
+const fetchGames = async (page = 1, ordering: RAWG_ORDERING = 'none') => {
+  const { data, error } = await fetcher<RAWGQuery>(
     RAWG_API_ENDPOINT +
       `?key=${RAWG_API_KEY}&ordering=${ordering}&page_size=${PAGE_SIZE}&page=${page}`
   )
-    .then((res) => res.json())
-    .then((res) => res.results)
+
+  if (error) {
+    console.error(error)
+    return []
+  }
+  return data.results
+}
 
 export default function Games() {
   const [session, setSession] = useStore<Session>('session')
@@ -97,9 +103,9 @@ export default function Games() {
     if (page === 1 && cols[0].length) return
     // Fetch from the api, specifying the page
     // TODO: add ordering for the filter
-    gameFetcher(page, ordering.value).then((data) => {
-      for (let i = (page - 1) * PAGE_SIZE, j = 0; j < data.length; i++, j++) {
-        cols[i % cols.length][i] = data[j]
+    fetchGames(page, ordering.value).then((games) => {
+      for (let i = (page - 1) * PAGE_SIZE, j = 0; j < games.length; i++, j++) {
+        cols[i % cols.length][i] = games[j]
       }
 
       setLoading(false)
@@ -113,11 +119,14 @@ export default function Games() {
     if (!cols[0].length) return
 
     setFetching(true)
-    setCols([[]])
 
-    gameFetcher(page, ordering.value).then((data) => {
-      for (let i = (page - 1) * PAGE_SIZE, j = 0; j < data.length; i++, j++) {
-        cols[i % cols.length][i] = data[j]
+    fetchGames(page, ordering.value).then((games) => {
+      // Manually reset the columns to prevent showing the old games of additional
+      // pages of the previous ordering
+      cols.forEach((col) => (col.length = 0))
+
+      for (let i = (page - 1) * PAGE_SIZE, j = 0; j < games.length; i++, j++) {
+        cols[i % cols.length][i] = games[j]
       }
       setFetching(false)
       setCols(cols)
@@ -140,7 +149,7 @@ export default function Games() {
       </div>
 
       {fetching ? (
-        <div className="w-full h-full flex-grow centered">
+        <div className="centered flex-grow">
           <CrossLoader />
         </div>
       ) : (
