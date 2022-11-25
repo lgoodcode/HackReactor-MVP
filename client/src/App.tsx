@@ -11,10 +11,15 @@ import apiFetcher from './utils/apiFetcher'
 export default function App() {
   const [session, setSession] = useStore<Session>('session')
 
-  const logout = async () => {
-    await apiFetcher('/session', { method: 'DELETE' })
-    // Redirect to the login page after logging out to force a refresh
-    window.location.assign('/')
+  const logout = () => {
+    // Need to include credentials to send the cookie to the server to destroy the session
+    apiFetcher('/session', {
+      method: 'DELETE',
+      credentials: 'include',
+    }).then(() =>
+      // Redirect to the login page after logging out to force a refresh
+      window.location.assign('/')
+    )
   }
 
   // Check if the user is logged in on page load via the cookies, if so, get the session
