@@ -83,7 +83,6 @@ to the encrypted password in the database.
 - Add account settings page and management
 - When adding a game to the library, make the menu show to select the progress and if
   none was selected and clicking outside the menu to close it, default to "pending"
-- Add loading when updating the game progress
 
 - ! Create API keys for each user
 - ! Implement redis store for sessions

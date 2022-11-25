@@ -20,10 +20,10 @@ export default function App() {
   // Check if the user is logged in on page load via the cookies, if so, get the session
   // and set it in the store
   useEffect(() => {
-    apiFetcher('/session').then(({ data, error }) => {
-      if (error) {
-        return setSession(null)
-      }
+    // Need to include credentials to send the session cookie, if exists, to check
+    // if the user is logged in already
+    apiFetcher('/session', { credentials: 'include' }).then(({ data, error }) => {
+      if (error) return setSession(null)
       setSession(data)
     })
   }, [])
