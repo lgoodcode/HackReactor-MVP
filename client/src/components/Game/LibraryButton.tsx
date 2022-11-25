@@ -52,7 +52,7 @@ export default function LibraryButton({
     <div
       onClick={handleLibraryMenu}
       className={`game-status game-card-btn centered gap-2 ${
-        progress === 'pending'
+        progress === 'not started'
           ? '!bg-yellow-600 hover:!bg-yellow-500'
           : progress === 'in progress'
           ? '!bg-sky-600 hover:!bg-sky-500'

@@ -85,4 +85,3 @@ to the encrypted password in the database.
   none was selected and clicking outside the menu to close it, default to "pending"
 
 - ! Create API keys for each user
-- ! Implement redis store for sessions

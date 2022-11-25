@@ -1,5 +1,5 @@
 export declare global {
-  export type GameProgress = 'pending' | 'in progress' | 'completed'
+  export type GameProgress = 'no started' | 'in progress' | 'completed'
 
   export type LibraryGame = {
     id: number

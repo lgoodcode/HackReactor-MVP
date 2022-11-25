@@ -59,12 +59,12 @@ export default function LibraryMenu() {
           style={{ top: menu.y - 12, left: menu.x + 24 }}
         >
           <div
-            onClick={handleUpdate('pending')}
+            onClick={handleUpdate('not started')}
             className="library-menu-item hover:text-white hover:bg-cool-500"
           >
             <HourglassIcon width={ICON_SIZE} height={ICON_SIZE} className="pointer-events-none" />
-            Pending
-            {menu.progress === 'pending' && (
+            Not Started
+            {menu.progress === 'not started' && (
               <CheckIcon className="h-5 w-5 fill-green-500" aria-hidden="true" />
             )}
           </div>

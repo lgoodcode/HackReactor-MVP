@@ -19,7 +19,7 @@ export type GameCardProps = {
 /**
  * Handles adding, updating, and removing a game to/from the user's library or wishlist.
  * Takes the game id and the type of list to add the game to. If the game was added it
- * will return the game object with the progress set to pending.
+ * will return the game object with the progress set to "not started".
  */
 function handleGame<T = any>(action: GameAction) {
   return async function (id: number, type: 'library' | 'wishlist', progress?: GameProgress) {

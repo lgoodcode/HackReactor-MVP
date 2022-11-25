@@ -60,7 +60,7 @@ export declare global {
     value: RAWG_ORDERING
   }
 
-  export type GameProgress = 'pending' | 'in progress' | 'completed'
+  export type GameProgress = 'not started' | 'in progress' | 'completed'
 
   export type LibraryGame = {
     id: number

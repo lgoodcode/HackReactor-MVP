@@ -11,8 +11,8 @@ export const getSession = (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
   req.session.destroy((err) => {
     if (err) console.error(err)
+    res.status(200).json({ message: 'Logged out' })
   })
-  res.status(200).json({ message: 'Logged out' })
 }
 
 // Create a new user or authenticate an existing user. Sets the user id in the session if successful.

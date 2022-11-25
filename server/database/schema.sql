@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS wishlist CASCADE;
 
 -- Re-create the progress enum type (requires single quotes for values)
 DROP TYPE IF EXISTS progress;
-CREATE TYPE progress AS ENUM ('pending', 'in progress', 'completed');
+CREATE TYPE progress AS ENUM ('not started', 'in progress', 'completed');
 
 CREATE TABLE users (
   "id" uuid NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -31,7 +31,7 @@ CREATE TABLE library (
   -- The id of the game
   "game_id" INT NOT NULL,
   -- The progress of the game
-  "progress" progress NOT NULL DEFAULT 'pending', -- requires single quote for value
+  "progress" progress NOT NULL DEFAULT 'not started', -- requires single quote for value
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

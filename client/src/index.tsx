@@ -21,7 +21,7 @@ const { StoreProvider } = createFastContext<Store>({
   libraryMenu: {
     open: false,
     gameId: -1,
-    progress: 'pending',
+    progress: 'not started',
     x: -1,
     y: -1,
     update: () => null,
