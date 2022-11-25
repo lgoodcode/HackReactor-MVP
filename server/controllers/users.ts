@@ -5,14 +5,17 @@ import { getWishlist } from '@/models/wishlist'
 import type { Request, Response } from 'express'
 
 export const getSession = (req: Request, res: Response) => {
-  res.status(200).json(req.session.user ?? null)
+  if (!req.session.user) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+  res.status(200).json(req.session.user)
 }
 
 export const logout = async (req: Request, res: Response) => {
   req.session.destroy((err) => {
     if (err) console.error(err)
   })
-  res.send(200).json({ message: 'Logged out' })
+  res.status(200).json({ message: 'Logged out' })
 }
 
 // Create a new user or authenticate an existing user. Sets the user id in the session if successful.
@@ -31,13 +34,10 @@ export const register = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Email already in use' })
   }
 
-  const library = await getLibrary(id)
-  const wishlist = await getWishlist(id)
-
   req.session.user = {
     id,
-    library,
-    wishlist,
+    library: await getLibrary(id),
+    wishlist: await getWishlist(id),
   }
   res.status(201).json(req.session.user)
 }
@@ -56,13 +56,10 @@ export const login = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Invalid email or password' })
   }
 
-  const library = (await getLibrary(id)) || []
-  const wishlist = (await getWishlist(id)) || []
-
   req.session.user = {
     id,
-    library,
-    wishlist,
+    library: await getLibrary(id),
+    wishlist: await getWishlist(id),
   }
   res.status(200).json(req.session.user)
 }
