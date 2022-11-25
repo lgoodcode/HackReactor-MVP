@@ -12,7 +12,7 @@ export const logout = async (req: Request, res: Response) => {
   req.session.destroy((err) => {
     if (err) console.error(err)
   })
-  res.sendStatus(200)
+  res.send(200).json({ message: 'Logged out' })
 }
 
 // Create a new user or authenticate an existing user. Sets the user id in the session if successful.
