@@ -5,10 +5,7 @@ import { getWishlist } from '@/models/wishlist'
 import type { Request, Response } from 'express'
 
 export const getSession = (req: Request, res: Response) => {
-  if (!req.session.user) {
-    return res.status(401).json({ message: 'Unauthorized' })
-  }
-  res.status(200).json(req.session.user)
+  res.status(200).json(req.session.user ?? null)
 }
 
 export const logout = async (req: Request, res: Response) => {

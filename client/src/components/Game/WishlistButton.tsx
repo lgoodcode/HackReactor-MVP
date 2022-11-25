@@ -17,7 +17,11 @@ export default function WishlistButton({ loading, added, add, remove }: Wishlist
         {loading ? (
           <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
         ) : (
-          <GiftIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white" />
+          <GiftIcon
+            width={ICON_SIZE}
+            height={ICON_SIZE}
+            className="fill-white pointer-events-none"
+          />
         )}
       </div>
     )
@@ -28,7 +32,11 @@ export default function WishlistButton({ loading, added, add, remove }: Wishlist
       onClick={remove}
       className="wished game-card-btn centered gap-2 !bg-lavender-500 hover:!bg-lavender-400"
     >
-      <GiftIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white pointer-events-none" />
+      {loading ? (
+        <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
+      ) : (
+        <GiftIcon width={ICON_SIZE} height={ICON_SIZE} className="fill-white pointer-events-none" />
+      )}
     </div>
   )
 }

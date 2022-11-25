@@ -24,7 +24,7 @@ export type GameCardProps = {
 function handleGame<T = any>(action: GameAction) {
   return async function (id: number, type: 'library' | 'wishlist', progress?: GameProgress) {
     const { data, error } = await apiFetcher<T>(
-      `${type}/${id}${action !== 'update' ? '' : '?progress=' + progress}`,
+      `/${type}/${id}${action !== 'update' ? '' : '?progress=' + progress}`,
       {
         credentials: 'include',
         method: action === 'add' ? 'POST' : action === 'update' ? 'PUT' : 'DELETE',

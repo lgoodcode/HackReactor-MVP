@@ -59,11 +59,15 @@ export default function LibraryButton({
           : '!bg-green-600 hover:!bg-green-500'
       }`}
     >
-      <GamepadIcon
-        width={ICON_SIZE}
-        height={ICON_SIZE}
-        className="fill-white pointer-events-none"
-      />
+      {loading ? (
+        <SimpleLoader w={ICON_SIZE} h={ICON_SIZE} />
+      ) : (
+        <GamepadIcon
+          width={ICON_SIZE}
+          height={ICON_SIZE}
+          className="fill-white pointer-events-none"
+        />
+      )}
     </div>
   )
 }
