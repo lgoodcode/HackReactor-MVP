@@ -16,7 +16,7 @@
   }
 
   .game-card {
-    @apply mt-6 transition-all duration-300 hover:scale-[1.03] rounded-lg hover:cursor-pointer shadow-xl;
+    @apply mt-6 transition-all duration-300 lg:hover:scale-[1.03] rounded-lg hover:cursor-pointer shadow-xl;
   }
 
   .game-card-btn {

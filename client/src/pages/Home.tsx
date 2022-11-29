@@ -8,7 +8,8 @@ import fetcher from '@/utils/fetcher'
 
 const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY
 const RAWG_API_ENDPOINT = 'https://api.rawg.io/api/games'
-const PAGE_SIZE = 32
+const IS_MOBILE = window.matchMedia('(max-width: 640px)').matches
+const PAGE_SIZE = IS_MOBILE ? 15 : 32
 // TODO: set the number of columns based on the screen size
 const NUM_COLS = 4
 const ORDERINGS: Ordering[] = [
@@ -143,7 +144,7 @@ export default function Games() {
   }
 
   return (
-    <section className="games-container w-full py-24 flex flex-col flex-grow">
+    <section className="games-container w-full py-12 lg:py-24 px-6 md:px-12 lg:px-44 flex flex-col flex-grow">
       <div className="filtering mb-2 w-64">
         <Filter data={ORDERINGS} selected={ordering} setSelected={handleOrderingChange} />
       </div>
@@ -153,7 +154,7 @@ export default function Games() {
           <CrossLoader />
         </div>
       ) : (
-        <div className="games grid grid-cols-4 gap-6 mb-16">
+        <div className="games grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
           {cols.map((games, i) => (
             <div key={i}>
               {games.map((game) => {

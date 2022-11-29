@@ -107,8 +107,8 @@ export default function GameCard({
   }
 
   return (
-    <div key={game.id} className="game-card">
-      <div className="card-img overflow-hidden relative w-full h-[180px]">
+    <div key={game.id} className="game-card min-w-[240px]">
+      <div className="card-img overflow-hidden relative w-full h-[260px] xl:h-[180px]">
         <img
           src={game.background_image}
           alt={game.name}

@@ -1,4 +1,4 @@
-# MVP Project
+# Menelaus
 
 The project is a simple web application that allows users to create a library of their
 favorite games. The user will also be able to set a personal rating, choose the level
@@ -13,8 +13,6 @@ on the game details page.
 
 ## **Client**
 
-Uses Vite to build the client. Added `express` with a simple server to serve the client.
-
 ### **Environment Variables**
 
 `VITE_RAWG_API_KEY*` - API key for RAWG API, must be public for the client to use\
@@ -24,6 +22,13 @@ Uses Vite to build the client. Added `express` with a simple server to serve the
 **\*** - required
 
 ## **Server**
+
+### **Deployment**
+
+The server is currently deployed at [Render](https://render.com/).
+
+Render, by default, uses node version `14.17.0`. We want to use the `LTS` version of node,
+so we need to add the `NODE_VERSION` environment variable and set it to `lts`.
 
 ### **CORS**
 
