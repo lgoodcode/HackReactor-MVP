@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks'
 import { useNavigate } from 'react-router-dom'
 import LibraryButton from '@/components/Game/LibraryButton'
 import WishlistButton from '@/components/Game/WishlistButton'
-import apiFetcher from '@/utils/apiFetcher'
+import handleGame from '@/utils/handleGame'
 import './GameCard.css'
 
 export type GameCardProps = {
@@ -14,29 +14,6 @@ export type GameCardProps = {
   setMenuOpen?: (open: boolean) => void
   updateSessionLibrary: (game: LibraryGame, action: GameAction) => void
   updateSessionWishlist: (game: WishlistGame, action: GameAction) => void
-}
-
-/**
- * Handles adding, updating, and removing a game to/from the user's library or wishlist.
- * Takes the game id and the type of list to add the game to. If the game was added it
- * will return the game object with the progress set to "not started".
- */
-function handleGame<T = any>(action: GameAction) {
-  return async function (id: number, type: 'library' | 'wishlist', progress?: GameProgress) {
-    const { data, error } = await apiFetcher<T>(
-      `/${type}/${id}${action !== 'update' ? '' : '?progress=' + progress}`,
-      {
-        credentials: 'include',
-        method: action === 'add' ? 'POST' : action === 'update' ? 'PUT' : 'DELETE',
-      }
-    )
-
-    if (error) {
-      console.error(error)
-      return null
-    }
-    return data
-  }
 }
 
 export default function GameCard({
@@ -108,7 +85,7 @@ export default function GameCard({
 
   return (
     <div key={game.id} className="game-card min-w-[240px]">
-      <div className="card-img overflow-hidden relative w-full h-[260px] xl:h-[180px]">
+      <div className="card-img overflow-hidden relative w-full h-[180px] sm:h-[240px] xl:h-[180px]">
         <img
           src={game.background_image}
           alt={game.name}
@@ -126,7 +103,7 @@ export default function GameCard({
             {game.metacritic && (
               <div
                 data-tooltip="Metascore"
-                className={`metacritic absolute right-0 p-[1px] px-1 border-[1px] rounded-md ${
+                className={`metacritic absolute right-0 p-[1px] px-1 border-[1px] rounded-md select-none ${
                   game.metacritic > 80
                     ? 'border-green-600'
                     : game.metacritic > 60

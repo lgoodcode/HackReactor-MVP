@@ -1,5 +1,5 @@
 {
-  "name": "mvp-server",
+  "name": "menelaus-server",
   "version": "0.0.0",
   "scripts": {
     "start": "node dist/server.js",

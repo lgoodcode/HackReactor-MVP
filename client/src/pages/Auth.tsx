@@ -4,6 +4,7 @@ import { useForm, type Validations } from '@/hooks/useForm'
 import { emailRegex, passwordRegex } from '@/utils/regex'
 import SimpleLoader from '@/components/Loaders/Simple'
 import Input from '@/components/Input'
+import useMediaQuery from '@/hooks/useMediaQuery'
 import apiFetcher from '@/utils/apiFetcher'
 
 type Data = Record<'email' | 'password', string>
@@ -37,6 +38,8 @@ export default function AuthPage({ setSession }: AuthProps) {
   const [serverError, setServerError] = useState('')
   const rememberedEmail = localStorage.getItem('email') ?? ''
   const [remember, setRememeber] = useState(Boolean(localStorage.getItem('email')) ?? false)
+  const isDesktop = useMediaQuery('(min-width: 1024px)')
+  const logoSize = isDesktop ? 172 : 124
 
   // Set the page title
   document.title = (signup ? 'Register' : 'Login') + ` | ${import.meta.env.VITE_APP_TITLE}`
@@ -86,12 +89,15 @@ export default function AuthPage({ setSession }: AuthProps) {
     // Only validate the email/password fields for login and the rest for register
     validations: signup
       ? validations
-      : { email: validations.email, password: validations.password },
+      : {
+          email: validations.email,
+          password: validations.password,
+        },
     onSubmit,
   })
 
   return (
-    <div className="centered min-h-screen mx-4 sm:mx-0 sm:py-8 lg:py-8 ">
+    <div className="centered min-h-screen px-6 sm:px-0 sm:py-8 lg:py-8 ">
       <div className="container max-w-sm sm:max-w-md my-8 lg:my-0">
         <div className="form-container relative w-full rounded-xl shadow-lg bg-purple-500">
           <div
@@ -116,8 +122,8 @@ export default function AuthPage({ setSession }: AuthProps) {
             className="relative w-full pt-6 pb-10 sn:pt-8 sm:pb-12 md:pt-12 md:pb-16 px-4 sm:px-10"
           >
             <div className="form-top">
-              <Link to="/" className="centered cursor-pointer">
-                <img src="/menelaus.svg" alt="MVP logo" width={172} height={172} />
+              <Link to="/" className="centered cursor-pointer select-none">
+                <img src="/menelaus.svg" alt="Menelaus logo" width={logoSize} height={logoSize} />
                 {/* <h3 className="text-5xl ml-2 text-white font-mont">Menelaus</h3> */}
               </Link>
 
@@ -149,8 +155,15 @@ export default function AuthPage({ setSession }: AuthProps) {
                   type="email"
                   defaultValue={rememberedEmail}
                   {...register('email')}
+                  size={isDesktop ? 'lg' : 'sm'}
                 />
-                <Input name="password" label="Password" type="password" {...register('password')} />
+                <Input
+                  name="password"
+                  label="Password"
+                  type="password"
+                  {...register('password')}
+                  size={isDesktop ? 'lg' : 'sm'}
+                />
               </div>
 
               <div className="mt-6 sm:mt-8 flex justify-between">

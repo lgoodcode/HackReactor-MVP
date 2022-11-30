@@ -15,17 +15,17 @@ export default function Navbar({ session }: NavbarProps) {
   const navigate = useNavigate()
   const handleLogoClick = () => (pathname === '/' ? null : navigate('/'))
   const isDesktop = useMediaQuery('(min-width: 1024px)')
-  const logoIconClass = isDesktop ? MOBILE_ICON_SIZE : DESKTOP_ICON_SIZE
+  const logoIconClass = isDesktop ? DESKTOP_ICON_SIZE : MOBILE_ICON_SIZE
 
   return (
-    <div className="navbar h-[84px] px-6 md:px-12 lg:px-44 py-2 bg-transparent flex justify-between">
+    <div className="navbar h-[64px] lg:h-[84px] px-6 md:px-12 lg:px-44 bg-transparent flex justify-between">
       <div onClick={handleLogoClick} className="logo flex items-center select-none cursor-pointer">
         <img src="/logo.svg" alt="logo" className={logoIconClass} />
         <h1 className="text-3xl md:text-4xl font-medium ml-2 font-mont">Menelaus</h1>
       </div>
 
       {!isDesktop ? (
-        <Menu isDesktop={false} />
+        <Menu session={Boolean(session)} isDesktop={false} />
       ) : (
         <div className="search flex items-center">
           <div className="ml-4 centered">
@@ -42,7 +42,7 @@ export default function Navbar({ session }: NavbarProps) {
 
           <div className="w-full h-full flex items-center ml-4">
             {session ? (
-              <Menu isDesktop={true} />
+              <Menu session={Boolean(session)} isDesktop={true} />
             ) : (
               <div className="no-user">
                 <button
