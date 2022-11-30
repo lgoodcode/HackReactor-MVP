@@ -49,8 +49,9 @@ export default function AuthPage({ setSession }: AuthProps) {
 
   // Changes the form to register or login
   const changeAuth = () => {
-    navigate(signup ? '/login' : '/signup')
     setSignup(!signup)
+    setServerError('')
+    navigate(signup ? '/login' : '/signup')
   }
 
   // Handles the form submission
