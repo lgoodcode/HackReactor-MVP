@@ -25,7 +25,10 @@ export const register = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Missing email or password' })
   }
 
-  const id = await createUser(sanitizeHtml(email), sanitizeHtml(password))
+  const sanitizedEmail = sanitizeHtml(email).toLowerCase()
+  const sanitizedPassword = sanitizeHtml(password)
+
+  const id = await createUser(sanitizedEmail, sanitizedPassword)
 
   if (!id) {
     return res.status(400).json({ message: 'Email already in use' })
@@ -47,7 +50,10 @@ export const login = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Missing email or password' })
   }
 
-  const id = await authenticate(sanitizeHtml(email), sanitizeHtml(password))
+  const sanitizedEmail = sanitizeHtml(email).toLowerCase()
+  const sanitizedPassword = sanitizeHtml(password)
+
+  const id = await authenticate(sanitizedEmail, sanitizedPassword)
 
   if (!id) {
     return res.status(400).json({ message: 'Invalid email or password' })
