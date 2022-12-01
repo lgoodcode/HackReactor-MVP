@@ -8,8 +8,7 @@ of completion (completed, not completed, etc.), and add a personal review of the
 - The user will also be able to add a game to their favorites list. 
 - The user can also select whether they have completed the game or not.
 - The user will be able to rate the game and the rating will be displayed 
-on the game details page.
-
+  on the game details page.
 
 ## **Client**
 
@@ -73,20 +72,3 @@ UUIDs for the user.
 When creating the users, we use the `pgcrypto` extension to encrypt the password.\
 When logging in, we use the `pgcrypto` extension to encrypt the password and compare it
 to the encrypted password in the database.
-
-## TODO
-
-- CHANGE PENDING TO "Not Started"
-- ! Make the design responsive
-
-- Add error handling for when unsuccessful requests are made to the API, such as adding a
-  game that doesn't exist or when the client is offline.
-- Don't render the cards until the data is loaded to prevent the weird black boxes
-- Add search feature
-- Add additional information expand on card hover
-- Add view for library and wishlist tabs of user
-- Add account settings page and management
-- When adding a game to the library, make the menu show to select the progress and if
-  none was selected and clicking outside the menu to close it, default to "pending"
-
-- ! Create API keys for each user
