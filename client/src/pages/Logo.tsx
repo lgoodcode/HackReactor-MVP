@@ -6,8 +6,14 @@ export default function Logo() {
       </div>
 
       <div>
-        <h2 className="text-3xl font-mont" style={{ fontSize: '2.1rem' }}>
-          Keeping track of the games you&#39;ve played or want made easy
+        <h2
+          className="font-mont"
+          style={{
+            fontSize: '2.7rem',
+            lineHeight: '3.5rem',
+          }}
+        >
+          Tracking the games you&#39;ve played or want made easy
         </h2>
       </div>
     </div>
